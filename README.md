@@ -94,6 +94,17 @@ Two recurring pieces, both designed to run daily:
 
 Together they demonstrate a credible path to a system that **refreshes daily, detects momentum, and alerts**. *(Bonus findings that made this work: Pickle's web is server-rendered/scrapable — richer than the brief assumed — so supply needs no API key; and style matching is word-aware + fuzzy (`match.py`), so counts are robust to title variants.)*
 
+### Alert policy
+Alerts are tiered, with a per-dress cooldown so nothing spams daily:
+
+| Level | Trigger | Action |
+|---|---|---|
+| 🟢 **Discovery** | `discover.py` finds a *new* product with > 1M views | Log + daily digest |
+| 🟡 **Momentum** | Trend score jumps > 20% in 24h (or a style's Pickle supply drops ≥ 3) | Telegram `#trending` |
+| 🔴 **Gap** | Trend > 70 **and** Pickle supply = 0 (hot demand, no rental supply) | Telegram + email + draft a TRACE campaign |
+
+**Cooldown:** a dress won't re-alert at the same level for 7 days — it only re-fires if it **escalates** a level (🟡 → 🔴) or re-accelerates after cooling. Keeps the signal high and the channel quiet. *(`diff.py` implements the threshold logic; this tiering + cooldown is the policy layer on top.)*
+
 ## The scorecard (real data)
 | Dress | Trend | Opportunity | TikTok views | Saves | Fresh(14d) | Pickle (style) |
 |---|--:|--:|--:|--:|--:|--:|
