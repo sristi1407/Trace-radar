@@ -27,6 +27,19 @@ Three currently-trending dresses, chosen to show three *different* patterns for 
 
 ---
 
+## How I approached this (and the tradeoffs I made)
+*The part that matters most: how I thought about an open-ended problem, not just the output.*
+
+**Where I began.** TRACE's hardest problem is density / cold-start — on a *presale* marketplace, demand has to emerge *before* supply exists. So rather than boil the ocean, I started from the single most reliable, verifiable signal (**Pickle rental supply**), built outward to demand (**TikTok**) and buy-intent (**ShopMy**), and focused on a few *specific* trending dresses that could tell a clear story.
+
+**Key tradeoffs — all deliberate:**
+- **Depth over breadth** — one reliable TikTok → ShopMy → Pickle chain on 3 specific dresses, not a thin pass over hundreds. Prove the signal, don't sample everything shallowly.
+- **Reliability over raw counts** — when TikTok keyword search was down I fell back to hashtags; when matching was brittle I made it word-aware + fuzzy; I measured supply from brand pages (reliable) instead of Pickle's fuzzy site search (which returns *ski goggles* for "giggle").
+- **Human read over the model when a signal is noisy** — the scorecard ranks Sculpt #1, but I lead with Giggle because Sculpt's score is inflated by Pilates noise. Knowing when *not* to trust your own number is the point.
+- **Automate the highest-leverage piece** — I built the discovery + daily-diff + alerting loop, and *documented* (rather than built) the heavier production pieces (LLM relevance filtering, orchestration DAG, catalog API), to respect the "lightweight PoC" scope and the deadline.
+
+**What I left uncertain, on purpose** — each signal's reliability, the false-negative risk, and the scoring's small-N compression are spelled out in *What's uncertain* and *Open questions* below, rather than papered over.
+
 ## Per-dress analysis — the 7 factors
 Each dress evaluated across the factors the brief asks for:
 
