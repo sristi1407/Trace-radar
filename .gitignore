@@ -3,5 +3,6 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
-# keep data snapshots as evidence; ignore only raw dumps:
+# keep data snapshots as evidence; ignore only raw dumps + run logs:
 data/*_raw.json
+data/logs/

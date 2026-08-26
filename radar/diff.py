@@ -23,6 +23,8 @@ HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
 WATCHLIST = os.path.join(HERE, "..", "config", "watchlist.json")
 TURNOVER_ALERT = 0.15   # >15% of listings gone since last snapshot = hot rental demand
+MIN_DISAPPEARED = 5     # ...but require an absolute floor too, so single-listing churn never fires
+STYLE_DROP_ALERT = 3    # only flag a style whose supply drops by >=3 (ignore noise)
 
 
 def two_latest(category):
@@ -67,12 +69,12 @@ def main():
         out.append(f"- disappeared (rented/sold): **{len(disappeared)}**  ·  new: {len(appeared)}  ·  turnover: {turnover:.0%}")
         out.append(f"- trending style '{term}': {s_old} → {s_new}\n")
 
-        # --- alert logic ---
-        if turnover >= TURNOVER_ALERT:
-            alerts.append(f"🔥 {d['brand']}: {turnover:.0%} of listings rented/sold since last snapshot (hot rental demand).")
+        # --- alert logic (thresholds avoid single-listing / churn noise) ---
+        if turnover >= TURNOVER_ALERT and len(disappeared) >= MIN_DISAPPEARED:
+            alerts.append(f"🔥 {d['brand']}: {len(disappeared)} listings gone ({turnover:.0%}) since last snapshot — hot rental demand.")
         if s_old == 0 and s_new > 0:
             alerts.append(f"🚨 {d['name']}: the trending style just APPEARED on Pickle ({s_new} listings) — demand meeting supply.")
-        elif s_new < s_old:
+        elif (s_old - s_new) >= STYLE_DROP_ALERT:
             alerts.append(f"📈 {d['name']}: '{term}' supply dropping ({s_old}→{s_new}) — renting out faster than it's listed.")
 
     out.append("\n---\n## ⚠️ Alerts")

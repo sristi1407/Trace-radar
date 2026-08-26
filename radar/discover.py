@@ -98,11 +98,16 @@ def main():
     posts = list(client.dataset(_dataset_id(run)).iterate_items())
     print(f"  {len(posts)} posts scraped")
 
-    agg = {}   # brand -> stats
+    agg = {}            # brand -> stats
+    creators_seen = {}  # author -> best views (creators posting about a detected brand)
     for p in posts:
         text = p.get("text") or ""
         views = _num(p.get("playCount"))
-        for brand, product in extract_products(text):
+        hits = extract_products(text)
+        author = (p.get("authorMeta") or {}).get("name")
+        if hits and author:
+            creators_seen[author] = max(creators_seen.get(author, 0), views)
+        for brand, product in hits:
             a = agg.setdefault(brand, {"brand": brand, "posts": 0, "views": 0,
                                        "saves": 0, "products": {}, "example": None, "top_views": -1})
             a["posts"] += 1
@@ -121,9 +126,13 @@ def main():
 
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     os.makedirs(SNAP_DIR, exist_ok=True)
-    json.dump({"scraped_at": stamp, "hashtags": hashtags, "candidates": ranked},
+    # creators the radar just found — handed off to ShopMy (closes the loop)
+    discovered_creators = [a for a, _ in sorted(creators_seen.items(), key=lambda x: -x[1])][:15]
+    json.dump({"scraped_at": stamp, "hashtags": hashtags, "candidates": ranked,
+               "discovered_creators": discovered_creators},
               open(os.path.join(SNAP_DIR, f"discover_{stamp}.json"), "w"), indent=2)
-    print(f"saved -> data/discover_{stamp}.json\n")
+    print(f"saved -> data/discover_{stamp}.json")
+    print(f"  discovered creators (feed to ShopMy via --from-discover): {discovered_creators[:8]}\n")
 
     print("=== emerging brand candidates (by engagement) ===")
     print(f"{'brand':<22}{'posts':>6}{'views':>12}   top product / status")

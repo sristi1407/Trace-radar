@@ -18,7 +18,7 @@ Setup:
 Run:
     python -m radar.shopmy_signals
 """
-import json, os, collections
+import json, os, sys, glob, collections
 from datetime import datetime, timezone
 
 from dotenv import load_dotenv
@@ -84,6 +84,12 @@ def main():
         raise SystemExit("Set APIFY_TOKEN in .env.")
     cfg = json.load(open(WATCHLIST))
     dresses, creators = cfg["dresses"], cfg.get("shopmy_creators", [])
+    if "--from-discover" in sys.argv:   # dynamic creators from the latest discover run — closes the loop
+        files = sorted(glob.glob(os.path.join(SNAP_DIR, "discover_*.json")), key=os.path.getmtime)
+        if files:
+            extra = json.load(open(files[-1])).get("discovered_creators", [])
+            creators = list(dict.fromkeys(creators + extra))
+            print(f"  + merged {len(extra)} TikTok-discovered creators (loop closed)")
     if not creators:
         raise SystemExit("Add a 'shopmy_creators' list to config/watchlist.json first.")
 

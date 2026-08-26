@@ -64,6 +64,15 @@ Today this is a daily radar over a watchlist. The natural product it points to:
 
 In one line: *watch demand across the web, catch it while it's accelerating, and pull buyers, renters, and owners together around the exact item — automatically.*
 
+### Hardening it for daily reliability
+Running this daily surfaced two failure modes I'd engineer around next — both drawn directly from what broke during this build:
+
+- **Signal pollution → LLM relevance filtering.** Keyword/hashtag matching misfires on homonyms ("sculpt" → Pilates classes, "giggle" → ski goggles, "cora" → a dog). Fix: pass each candidate caption through a cheap LLM (gpt-4o-mini / Gemini Flash) — *"does this video actually feature and recommend THIS dress? Ignore Pilates, pets, and generic brand mentions"* — to produce a clean per-video **`confidence_score`** instead of trusting raw counts. (This is exactly why I lead with the human read over the raw scorecard.)
+- **Keyword-search outages → fallback chaining.** TikTok's keyword search was down during this build, so I fell back to hashtags. In production I'd chain further: the brand's **official account feed** + the feeds of the **top ~50 ShopMy creators**. A **co-occurrence trigger** — the brand posts a style *and* ≥3 creators post the same style within 48h — is a stronger, more reliable signal than raw hashtag volume anyway.
+- **Dynamic creator discovery (loop now wired).** Trends come from *new* creators, not a fixed 14. `discover.py` emits the high-engagement creators it finds, and `shopmy_signals.py --from-discover` scrapes them automatically — a self-expanding feedback loop: **TikTok finds the creator → ShopMy reads their links → Pickle checks the products.** (Handle resolution is best-effort — TikTok and ShopMy usernames don't always match — which the fuller version would reconcile via ShopMy's search API.)
+- **Catalog-wide validation, not just a sample.** Pull breadth metrics (e.g. the Cora's 991 promoters) from ShopMy's product search / sitemap rather than the 14-creator sample, and take a **weekly per-brand catalog baseline** (Aritzia, House of CB, Réalisation Par, Retrofete) so buy-intent is measured against *all* linked products.
+- **Orchestration + state (make it a real daily job).** Wrap the pipeline in a Prefect/Dagster DAG (scrape → resolve → score → diff → alert) with **atomic, dated snapshots + a `_SUCCESS` marker**. `diff.py` then compares only *complete* runs — so a half-failed scrape can't produce a false zero-delta (exactly the apples-to-oranges failure I hit diffing a capped snapshot against a full one).
+
 ## How it works (architecture)
 ```
 discover.py ─ [INVERSE SEARCH] trending hashtags → extract brand/product → surface NEW viral dresses
@@ -125,5 +134,8 @@ python -m radar.tiktok_signals
 python -m radar.shopmy_signals   # -> data/shopmy_<date>.json  (buy-intent)
 python -m radar.score         # -> data/radar_<date>.md
 python -m radar.diff          # -> data/diff_<date>.md  (run daily for momentum)
+
+# — or run the entire pipeline in one command (logs to data/logs/, cron-friendly):
+python -m radar.run_daily            # add --loop to repeat every 24h
 ```
 > `.env` (APIFY_TOKEN) is git-ignored. Pickle is scraped politely (throttled, headless).
