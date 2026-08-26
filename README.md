@@ -73,6 +73,11 @@ Running this daily surfaced two failure modes I'd engineer around next — both 
 - **Catalog-wide validation, not just a sample.** Pull breadth metrics (e.g. the Cora's 991 promoters) from ShopMy's product search / sitemap rather than the 14-creator sample, and take a **weekly per-brand catalog baseline** (Aritzia, House of CB, Réalisation Par, Retrofete) so buy-intent is measured against *all* linked products.
 - **Orchestration + state (make it a real daily job).** Wrap the pipeline in a Prefect/Dagster DAG (scrape → resolve → score → diff → alert) with **atomic, dated snapshots + a `_SUCCESS` marker**. `diff.py` then compares only *complete* runs — so a half-failed scrape can't produce a false zero-delta (exactly the apples-to-oranges failure I hit diffing a capped snapshot against a full one).
 
+### Open questions I'd pressure-test next
+- **ShopMy resolution is best-effort.** TikTok and ShopMy handles don't always match. Refinements: a manual **handle-mapping table** for high-value creators, plus a **product-name search fallback** — if a creator can't be resolved, search ShopMy for the dress name directly (which I already do for the watchlist).
+- **LLM relevance filtering has real tradeoffs.** Filtering 1,000+ captions/day adds up even on gpt-4o-mini — so I'd set a **budget**, run it **async/batched** (never blocking the pipeline), and validate it against a small **labeled caption set**. At scale, a fine-tuned lightweight classifier (e.g. DistilBERT) may beat per-call LLM cost + latency.
+- **False negatives are the harder problem.** Today I guard against false *positives* (Pilates → "Sculpt"); I'd still *miss* a trending dress if the caption doesn't name the brand, the hashtag isn't in my list, or search is down. The co-occurrence trigger (brand posts + ≥3 creators in 48h) helps; the fuller fix is an LLM that **infers the product from context** even when it isn't explicitly named.
+
 ## How it works (architecture)
 ```
 discover.py ─ [INVERSE SEARCH] trending hashtags → extract brand/product → surface NEW viral dresses
