@@ -1,0 +1,9 @@
+{
+  "_note": "Your seeds. Discovery (choosing these) is part of what's graded — document in the README how you found them. Copy to watchlist.json.",
+  "category": "dresses",
+  "occasion_focus": "event / going-out",
+  "brands": ["Réalisation Par", "House of CB", "Cult Gaia", "Retrofete", "Tory Burch"],
+  "creators": ["katiejanehughes", "example_creator_2", "example_creator_3"],
+  "tiktok_keywords": ["going out dress", "wedding guest dress", "House of CB dress"],
+  "trends_terms": ["House of CB Soraya", "Realisation Par dress", "Retrofete dress"]
+}

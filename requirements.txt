@@ -1,0 +1,16 @@
+# Core
+requests
+python-dotenv
+
+# Pickle scraping (headless browser — also run: playwright install chromium)
+playwright
+
+# Apify actors (TikTok, ShopMy)
+apify-client
+
+# Fuzzy style matching (match.py)
+rapidfuzz
+
+# Optional
+beautifulsoup4
+pandas

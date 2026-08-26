@@ -1,0 +1,40 @@
+{
+  "_note": "The dresses the radar tracks. Extend freely. Not secret — safe to commit.",
+  "shopmy_creators": [
+    "nadiaorr", "lindleysavage", "sophcrump",
+    "hellosarahswift", "luizasantos", "emmyypetit", "halleykate", "dailydressme", "dresswithdani",
+    "lucylivin", "hopelavine", "littlewhitelooks", "bigonbridal", "laurenjeworski"
+  ],
+  "dresses": [
+    {
+      "id": "cora",
+      "name": "Réalisation Par The Cora (Mirage)",
+      "brand": "Réalisation Par",
+      "pickle_category": "realisation-par/dresses",
+      "match": "cora",
+      "tiktok_hashtags": ["realisationpar", "coradress", "thecora"],
+      "shopmy_merchant": ["realisationpar"],
+      "trends_terms": ["Realisation Par Cora"]
+    },
+    {
+      "id": "giggle",
+      "name": "Aritzia Giggle Dress",
+      "brand": "Aritzia",
+      "pickle_category": "aritzia/dresses",
+      "match": "giggle",
+      "tiktok_hashtags": ["aritzia", "giggledress", "aritziagiggle"],
+      "shopmy_merchant": ["aritzia"],
+      "trends_terms": ["Aritzia Giggle dress"]
+    },
+    {
+      "id": "sculpt",
+      "name": "House of CB The Sculpt (bandage)",
+      "brand": "House of CB",
+      "pickle_category": "house-of-cb/dresses",
+      "match": "sculpt",
+      "tiktok_hashtags": ["houseofcb", "bandagedress", "thesculpt"],
+      "shopmy_merchant": ["houseofcb", "house of cb"],
+      "trends_terms": ["House of CB Sculpt"]
+    }
+  ]
+}

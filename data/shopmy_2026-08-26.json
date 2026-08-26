@@ -1,0 +1,183 @@
+{
+  "scraped_at": "2026-08-26",
+  "results": {
+    "cora": {
+      "name": "R\u00e9alisation Par The Cora (Mirage)",
+      "style": {
+        "n_picks": 2,
+        "n_creators": 2,
+        "total_clicks": 69540,
+        "monthly_clicks": 0,
+        "max_promoters": 991,
+        "example": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+      },
+      "brand": {
+        "n_picks": 4,
+        "n_creators": 2,
+        "total_clicks": 72094,
+        "monthly_clicks": 7,
+        "max_promoters": 991,
+        "example": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+      },
+      "style_picks": [
+        {
+          "creator": "sophcrump",
+          "brand": "Re\u0301alisation Par",
+          "merchant": "realisationpar",
+          "title": "The Cora Dress",
+          "price": 360,
+          "total_clicks": 34770,
+          "weekly_clicks": 0,
+          "monthly_clicks": 0,
+          "promoters": 991,
+          "url": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+        },
+        {
+          "creator": "nadiaorr",
+          "brand": "Re\u0301alisation Par",
+          "merchant": "realisationpar",
+          "title": "The Cora Dress",
+          "price": 360,
+          "total_clicks": 34770,
+          "weekly_clicks": 0,
+          "monthly_clicks": 0,
+          "promoters": 991,
+          "url": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+        }
+      ]
+    },
+    "giggle": {
+      "name": "Aritzia Giggle Dress",
+      "style": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "brand": {
+        "n_picks": 3,
+        "n_creators": 2,
+        "total_clicks": 129887,
+        "monthly_clicks": 0,
+        "max_promoters": 2897,
+        "example": "https://aritzia.com/us/en/product/annina-high-rise-wide-leg-jean/123001.html"
+      },
+      "style_picks": []
+    },
+    "sculpt": {
+      "name": "House of CB The Sculpt (bandage)",
+      "style": {
+        "n_picks": 1,
+        "n_creators": 1,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 1,
+        "example": "https://miamara.com/products/soleil-sculptural-gold-u-strapless-maxi-dress"
+      },
+      "brand": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "style_picks": [
+        {
+          "creator": "hellosarahswift",
+          "brand": "Miamara",
+          "merchant": "miamara",
+          "title": "Soleil Sculptural Gold U Strapless Maxi Dress",
+          "price": 156,
+          "total_clicks": 0,
+          "weekly_clicks": 0,
+          "monthly_clicks": 0,
+          "promoters": 1,
+          "url": "https://miamara.com/products/soleil-sculptural-gold-u-strapless-maxi-dress"
+        }
+      ]
+    }
+  },
+  "brand_leaderboard": [
+    [
+      "jcrew",
+      844605
+    ],
+    [
+      "rhodeskin",
+      776347
+    ],
+    [
+      "zappos",
+      646650
+    ],
+    [
+      "adidas",
+      460886
+    ],
+    [
+      "hauslabs",
+      442734
+    ],
+    [
+      "paulaschoice",
+      438143
+    ],
+    [
+      "leset",
+      416410
+    ],
+    [
+      "tower28beauty",
+      383612
+    ],
+    [
+      "stillhere",
+      355625
+    ],
+    [
+      "westman-atelier",
+      292399
+    ],
+    [
+      "exclusivebeautyclub",
+      265084
+    ],
+    [
+      "saltandstone",
+      234705
+    ],
+    [
+      "thereformation",
+      231094
+    ],
+    [
+      "abercrombie",
+      199799
+    ],
+    [
+      "sephora",
+      199524
+    ],
+    [
+      "clinique",
+      146208
+    ],
+    [
+      "olaplex",
+      144332
+    ],
+    [
+      "trysuri",
+      144050
+    ],
+    [
+      "levelshoes",
+      135009
+    ],
+    [
+      "aritzia",
+      129887
+    ]
+  ]
+}
