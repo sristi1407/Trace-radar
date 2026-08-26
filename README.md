@@ -118,7 +118,7 @@ Together they demonstrate a credible path to a system that **refreshes daily, de
 - **Google-Trends seasonality** is the remaining next step.
 - **Inverse-search extraction is heuristic** (brand list + regex) — it catches *named* brands but misses captions that don't name one; an LLM/NER pass would resolve exact SKUs far better (the code leaves that hook). A live run still surfaced **Nadine Merabi (~9.2M views) as a 🆕 NEW candidate** the radar wasn't told to watch.
 - **Style matching is word-aware + fuzzy** (`match.py`); switching from naive substring left the supply counts unchanged (0 / 0 / 78), confirming the gaps aren't a matching artifact.
-- **Scoring** uses min-max over only 3 items, which squashes the middle (Cora scores low despite 6.9M views); with more dresses it stabilizes.
+- **Scoring** uses min-max over only 3 items, which squashes the middle (Cora scores low despite 6.9M views). It stabilizes as `discover.py` surfaces more dresses — and the production version would use **percentile ranks against a rolling 30-day baseline** (accumulated by `run_daily.py`'s dated snapshots), removing the small-N compression artifact entirely.
 
 ## What the radar surfaces next
 Pickle's most-listed rental brands (proven demand) include **Retrofete, De La Vali, House of CB** — a natural place to find the *next* convergence dress if one is also rising on TikTok.
