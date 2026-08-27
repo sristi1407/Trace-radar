@@ -159,8 +159,8 @@ def main():
                            f"<br><span class='muted'>brand-level {fmt(r['sm_brand'])} clicks</span>")
         elif r['sm_brand']:
             shopmy_cell = f"brand-level {fmt(r['sm_brand'])} clicks · <span class='muted'>creators feature it (see link)</span>"
-        else:   # our 14-creator sample missed it, but ShopMy's directory has it (see link)
-            shopmy_cell = f"<span class='muted'>featured on ShopMy (see link) · clicks not in our 14-creator sample</span>"
+        else:   # our 14-creator sample missed it; the ShopMy search link lets you check directly
+            shopmy_cell = f"<span class='muted'>on ShopMy (see link) · click volume not captured in our 14-creator sample</span>"
         cards += f"""
     <div class="card">
       <span class="pat" style="background:{color}">{pat}</span>
@@ -191,14 +191,14 @@ def main():
 <style>{CSS}</style></head><body>
 <header><h1>TRACE — Demand &amp; Liquidity Radar</h1>
 <p>TikTok × ShopMy × Pickle · ranked by opportunity (demand where rental supply is missing) · {stamp}</p></header>
-<section><h2>Trending dresses</h2><div class="cards">{cards}</div></section>
+<section><h2>Trending dresses <span class="muted" style="font-weight:400;font-size:12px">— Trend &amp; Opportunity are 0–100, normalized within these 3 dresses (100 = top of the set)</span></h2><div class="cards">{cards}</div></section>
 <section><h2>🔎 Discovery feed <span class="muted">— inverse search: dresses the radar found on its own</span></h2>
 <table class="feed"><tr><th>Brand</th><th>Views</th><th>Posts</th><th>Top product</th><th></th></tr>{feed}</table></section>
 <section><h2>Alert policy</h2>
 <div class="tier"><span class="dot g"></span><b>Discovery</b>&nbsp;— new product &gt;1M views → log + daily digest</div>
 <div class="tier"><span class="dot y"></span><b>Momentum</b>&nbsp;— trend jumps &gt;20% in 24h → Telegram #trending</div>
 <div class="tier"><span class="dot r"></span><b>Gap</b>&nbsp;— trend &gt;70 &amp; Pickle supply = 0 → Telegram + email + campaign draft</div></section>
-<footer>Lightweight PoC · signals are directional — see the README for what's reliable vs. not. Trend = 0.5·views + 0.3·saves + 0.2·freshness (normalized); Opportunity = Trend × supply-gap.</footer>
+<footer>Lightweight PoC · signals are directional — see the README for what's reliable vs. not.<br>Trend = 0.5·views + 0.3·saves + 0.2·freshness, <b>min-max normalized across these 3 dresses</b> — so 100 is the highest in <i>this set</i>, not an absolute scale (production would use percentile ranks vs. a rolling 30-day baseline). Opportunity = Trend × supply-gap (higher when the trending style has little/no rental supply).</footer>
 </body></html>"""
     with open(OUT, "w") as f:
         f.write(html)

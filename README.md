@@ -1,7 +1,7 @@
 # TRACE Demand & Liquidity Radar — Proof of Concept
 *Sristi Prasad · Applied AI Engineering Exercise · Aug 2026*
 
-**▶ [Live dashboard](https://htmlpreview.github.io/?https://github.com/sristi1407/Trace-radar/blob/main/dashboard.html)** — interactive; each dress links out to TikTok · ShopMy · Pickle · the product page. *(Or open `dashboard.html` from the repo in a browser.)*
+**▶ [Live dashboard](https://sristi1407.github.io/Trace-radar/dashboard.html)** — interactive; each dress links out to TikTok · ShopMy · Pickle · the product page. *(Served via GitHub Pages; or open `dashboard.html` from the repo in a browser.)*
 
 > **Thesis:** TikTok tells you *what's gaining desire*, ShopMy *resolves that desire to a buyable product*, and Pickle tells you *whether that item actually has rental supply*. Combining present **and absent** signals reveals where TRACE should concentrate demand — sometimes *before* rental supply exists.
 
