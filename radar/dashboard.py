@@ -86,8 +86,12 @@ def main():
         pk = load(f"pickle_{d['pickle_category'].replace('/', '_')}_*.json")
         listings = pk.get("listings", [])
         total = len(listings) if listings else None
-        style = sum(1 for x in listings if matches_style(x.get("title"), d.get("match"))) if listings else None
+        matched = [x for x in listings if matches_style(x.get("title"), d.get("match"))] if listings else []
+        style = len(matched) if listings else None
+        # deep-link to the actual matching rental (cheapest rent first); None => no exact listing
+        best = min(matched, key=lambda x: x.get("rent_usd") or 10**9) if matched else None
         rows.append({
+            "pickle_listing": best,
             "d": d, "views": th.get("total_views", 0), "saves": th.get("total_saves", 0),
             "fresh": th.get("share_recent_14d", 0),
             "sm_clicks": (smv.get("style", {}) or {}).get("total_clicks", 0),
@@ -105,7 +109,13 @@ def main():
     for r in sorted(rows, key=lambda r: r["opp"], reverse=True):
         d = r["d"]
         pat, color, desc = PATTERN.get(d["id"], ("—", "#556", ""))
-        pickle_url = "https://www.shoponpickle.com/shop/rent/" + d["pickle_category"]
+        cat_url = "https://www.shoponpickle.com/shop/rent/" + d["pickle_category"]
+        pk = r.get("pickle_listing")
+        if pk:   # exact style is rentable -> link straight to that listing
+            rent = f" · ${pk['rent_usd']}/rent" if pk.get("rent_usd") else ""
+            pickle_link = f'<a href="{pk["url"]}" target="_blank">rent this on pickle ↗{rent}</a>'
+        else:    # brand is on Pickle but this exact dress is not -> the gap, made clickable
+            pickle_link = f'<a href="{cat_url}" target="_blank" class="muted">no exact rental yet · browse brand ↗</a>'
         supply = "n/a" if r["total"] is None else f"{r['style']} <span class='muted'>of {r['total']}</span>"
         cards += f"""
     <div class="card">
@@ -121,7 +131,7 @@ def main():
         <tr><td>👗 Pickle</td><td>{supply} rental listings of the style</td></tr>
       </table>
       <p class="desc">{desc}</p>
-      <div class="links"><a href="{d.get('product_url', '#')}" target="_blank">product ↗</a> &nbsp;·&nbsp; <a href="{pickle_url}" target="_blank">pickle ↗</a></div>
+      <div class="links"><a href="{d.get('product_url', '#')}" target="_blank">product ↗</a> &nbsp;·&nbsp; {pickle_link}</div>
     </div>"""
 
     feed = ""
