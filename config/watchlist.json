@@ -14,7 +14,8 @@
       "match": "cora",
       "tiktok_hashtags": ["realisationpar", "coradress", "thecora"],
       "shopmy_merchant": ["realisationpar"],
-      "trends_terms": ["Realisation Par Cora"]
+      "trends_terms": ["Realisation Par Cora"],
+      "product_url": "https://realisationpar.com/the-cora-mirage/"
     },
     {
       "id": "giggle",
@@ -24,7 +25,8 @@
       "match": "giggle",
       "tiktok_hashtags": ["aritzia", "giggledress", "aritziagiggle"],
       "shopmy_merchant": ["aritzia"],
-      "trends_terms": ["Aritzia Giggle dress"]
+      "trends_terms": ["Aritzia Giggle dress"],
+      "product_url": "https://www.aritzia.com/us/en/product/giggle-dress/130273.html"
     },
     {
       "id": "sculpt",
@@ -34,7 +36,8 @@
       "match": "sculpt",
       "tiktok_hashtags": ["houseofcb", "bandagedress", "thesculpt"],
       "shopmy_merchant": ["houseofcb", "house of cb"],
-      "trends_terms": ["House of CB Sculpt"]
+      "trends_terms": ["House of CB Sculpt"],
+      "product_url": "https://www.houseofcb.com/the-sculpt-black-bandage-mini-dress.html"
     }
   ]
 }

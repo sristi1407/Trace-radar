@@ -166,5 +166,7 @@ python -m radar.diff          # -> data/diff_<date>.md  (run daily for momentum)
 
 # — or run the entire pipeline in one command (logs to data/logs/, cron-friendly):
 python -m radar.run_daily            # add --loop to repeat every 24h
+
+python -m radar.dashboard            # -> dashboard.html (visual UI; open in a browser)
 ```
 > `.env` (APIFY_TOKEN) is git-ignored. Pickle is scraped politely (throttled, headless).
