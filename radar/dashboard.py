@@ -10,6 +10,7 @@ Run after the pipeline:
 """
 import glob, json, os
 from datetime import datetime, timezone
+from urllib.parse import quote
 
 from .match import matches_style
 
@@ -24,14 +25,14 @@ PATTERN = {
     "sculpt": ("Scarcity gap", "#dc2626", "Viral + limited-edition, no rental supply → build the market from scratch."),
 }
 
-# Path-based TikTok tags (query strings get stripped in some viewers, so no ?q= search).
-# Chosen for reliability after live testing: product-word tags are unreliable —
-# #giggledress doesn't exist and #thesculpt resolves to Pilates content — so those fall
-# back to the BRAND tag, which is guaranteed to exist and unambiguously fashion.
-TIKTOK_TAG = {
-    "cora":   "coradress",   # verified: shows the actual Réalisation Par Cora
-    "giggle": "aritzia",     # #giggledress doesn't exist -> brand tag
-    "sculpt": "houseofcb",   # #thesculpt is a Pilates tag -> brand tag
+# TikTok SEARCH queries (verified live to surface the actual dress). Search beats
+# hashtags here: #giggledress doesn't exist and #thesculpt is a Pilates tag, whereas a
+# brand+style keyword search reliably lands on the product. NOTE: these use ?q=, which
+# some sandboxed preview panes strip — open dashboard.html in a real browser to test.
+TIKTOK_QUERY = {
+    "cora":   "realisation par cora dress",
+    "giggle": "giggle dress aritzia",                       # verified
+    "sculpt": "the sculpt black bandage mini dress house of cb",  # verified
 }
 
 CSS = """
@@ -126,10 +127,10 @@ def main():
             pickle_link = f'<a href="{pk["url"]}" target="_blank">rent this on pickle ↗{rent}</a>'
         else:    # brand is on Pickle but this exact dress is not -> the gap, made clickable
             pickle_link = f'<a href="{cat_url}" target="_blank" class="muted">no exact rental yet · browse brand ↗</a>'
-        # TikTok proof: path-based tag link (verified to work — see TIKTOK_TAG note).
-        tt = TIKTOK_TAG.get(d["id"], (d.get("shopmy_merchant") or [""])[0])
-        tiktok_link = (f'<a href="https://www.tiktok.com/tag/{tt}" target="_blank">'
-                       f'see it on TikTok #{tt} ↗</a>') if tt else ""
+        # TikTok proof: search on the brand + style name (verified — see TIKTOK_QUERY note).
+        q = TIKTOK_QUERY.get(d["id"]) or (d.get("trends_terms") or [d["name"]])[0]
+        tiktok_link = (f'<a href="https://www.tiktok.com/search?q={quote(q)}" '
+                       f'target="_blank">see it on TikTok ↗</a>')
         supply = "n/a" if r["total"] is None else f"{r['style']} <span class='muted'>of {r['total']}</span>"
         cards += f"""
     <div class="card">
