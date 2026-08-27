@@ -31,8 +31,8 @@ PATTERN = {
 # some sandboxed preview panes strip — open dashboard.html in a real browser to test.
 TIKTOK_QUERY = {
     "cora":   "realisation par cora dress",
-    "giggle": "giggle dress aritzia",                       # verified
-    "sculpt": "the sculpt black bandage mini dress house of cb",  # verified
+    "giggle": "giggle dress aritzia",                     # verified
+    "sculpt": "the sculpt bandage mini dress house of cb",  # verified; no color -> any colorway
 }
 
 CSS = """
