@@ -21,18 +21,27 @@ OUT = os.path.join(HERE, "..", "dashboard.html")
 
 PATTERN = {
     "cora":   ("Convergence", "#16a34a", "Demand + supply already converge → match renters/buyers to owners now."),
-    "giggle": ("White space", "#d97706", "Hot demand, zero rental supply → organize demand before supply exists."),
+    "merabi": ("High-value liquidity", "#0ea5e9", "The Nina Gold — a signature sequin look; 10 rentable on Pickle (gold from $60), famous on TikTok. High-value supply + demand; ShopMy buy-intent not yet lit (seed the creators)."),
     "sculpt": ("Scarcity gap", "#dc2626", "Viral + limited-edition, no rental supply → build the market from scratch."),
 }
 
-# TikTok SEARCH queries (verified live to surface the actual dress). Search beats
-# hashtags here: #giggledress doesn't exist and #thesculpt is a Pilates tag, whereas a
-# brand+style keyword search reliably lands on the product. NOTE: these use ?q=, which
-# some sandboxed preview panes strip — open dashboard.html in a real browser to test.
-TIKTOK_QUERY = {
-    "cora":   "realisation par cora dress",
-    "giggle": "giggle dress aritzia",                     # verified
-    "sculpt": "the sculpt bandage mini dress house of cb",  # verified; no color -> any colorway
+# TikTok links per dress, each a list of (label, url). Use a clean dress TAG where one
+# exists (path-based → opens everywhere), or a brand+style SEARCH where the tag is
+# unusable (#thesculpt is Pilates). Nadine Merabi is anchored to its one signature look,
+# the Gold sequin. (?q= search opens in a real browser but is stripped by some preview panes.)
+_S = "https://www.tiktok.com/search?q="
+TIKTOK_LINK = {
+    "cora":   [("see it on TikTok", "https://www.tiktok.com/tag/coradress")],
+    "sculpt": [("see it on TikTok", _S + quote("the sculpt bandage mini dress house of cb"))],
+    "merabi": [("see it on TikTok", _S + quote("nadine merabi dress nina gold"))],
+}
+
+# ShopMy shop-search per dress (proves creators feature it — our 14-creator scrape sample
+# missed them, but ShopMy's directory surfaces them). ?query= opens in a real browser.
+SHOPMY_LINK = {
+    "cora":   "https://shopmy.us/shop?query=realisation+par+cora+dress",
+    "sculpt": "https://shopmy.us/shop?query=house+of+cb+bandage-mini-dress",
+    "merabi": "https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular",
 }
 
 CSS = """
@@ -92,7 +101,9 @@ def main():
 
     rows = []
     for d in wl["dresses"]:
-        th = tt.get(d["id"], {}).get("brand_heat", {}) or {}
+        node = tt.get(d["id"], {}) or {}
+        td = node.get("this_dress", {}) or {}     # the SPECIFIC dress = honest headline
+        bh = node.get("brand_heat", {}) or {}      # brand-tag traffic = context only
         smv = sm.get(d["id"], {})
         pk = load(f"pickle_{d['pickle_category'].replace('/', '_')}_*.json")
         listings = pk.get("listings", [])
@@ -103,8 +114,9 @@ def main():
         best = min(matched, key=lambda x: x.get("rent_usd") or 10**9) if matched else None
         rows.append({
             "pickle_listing": best,
-            "d": d, "views": th.get("total_views", 0), "saves": th.get("total_saves", 0),
-            "fresh": th.get("share_recent_14d", 0),
+            "d": d, "views": td.get("total_views", 0), "saves": td.get("total_saves", 0),
+            "fresh": td.get("share_recent_14d", 0), "tt_creators": td.get("n_creators", 0),
+            "brand_views": bh.get("total_views", 0),
             "sm_clicks": (smv.get("style", {}) or {}).get("total_clicks", 0),
             "sm_prom": (smv.get("style", {}) or {}).get("max_promoters", 0),
             "sm_brand": (smv.get("brand", {}) or {}).get("total_clicks", 0),
@@ -127,11 +139,28 @@ def main():
             pickle_link = f'<a href="{pk["url"]}" target="_blank">rent this on pickle ↗{rent}</a>'
         else:    # brand is on Pickle but this exact dress is not -> the gap, made clickable
             pickle_link = f'<a href="{cat_url}" target="_blank" class="muted">no exact rental yet · browse brand ↗</a>'
-        # TikTok proof: search on the brand + style name (verified — see TIKTOK_QUERY note).
-        q = TIKTOK_QUERY.get(d["id"]) or (d.get("trends_terms") or [d["name"]])[0]
-        tiktok_link = (f'<a href="https://www.tiktok.com/search?q={quote(q)}" '
-                       f'target="_blank">see it on TikTok ↗</a>')
+        # TikTok proof: one or more "see it" links per dress.
+        tks = TIKTOK_LINK.get(d["id"], [])
+        if len(tks) == 1:
+            tiktok_link = f'<a href="{tks[0][1]}" target="_blank">see it on TikTok ↗</a>'
+        elif tks:
+            inner = " · ".join(f'<a href="{u}" target="_blank">{lbl} ↗</a>' for lbl, u in tks)
+            tiktok_link = f'on TikTok: {inner}'
+        else:
+            tiktok_link = ""
+        sm_url = SHOPMY_LINK.get(d["id"])
+        shopmy_link = f'<a href="{sm_url}" target="_blank">on ShopMy ↗</a>' if sm_url else ""
         supply = "n/a" if r["total"] is None else f"{r['style']} <span class='muted'>of {r['total']}</span>"
+        # TikTok: the SPECIFIC dress is the headline; brand-tag traffic is muted context
+        tiktok_cell = (f"{fmt(r['views'])} views · {fmt(r['saves'])} saves · {r['tt_creators']} creators"
+                       f"<br><span class='muted'>brand tag {fmt(r['brand_views'])} views · {int(r['fresh']*100)}% posted &lt;14d</span>")
+        if r['sm_clicks'] or r['sm_prom']:
+            shopmy_cell = (f"{fmt(r['sm_clicks'])} clicks · {r['sm_prom']} creators link it"
+                           f"<br><span class='muted'>brand-level {fmt(r['sm_brand'])} clicks</span>")
+        elif r['sm_brand']:
+            shopmy_cell = f"brand-level {fmt(r['sm_brand'])} clicks · <span class='muted'>creators feature it (see link)</span>"
+        else:   # our 14-creator sample missed it, but ShopMy's directory has it (see link)
+            shopmy_cell = f"<span class='muted'>featured on ShopMy (see link) · clicks not in our 14-creator sample</span>"
         cards += f"""
     <div class="card">
       <span class="pat" style="background:{color}">{pat}</span>
@@ -141,12 +170,12 @@ def main():
         <div><span class="big" style="color:{color}">{r['opp']}</span><span class="lbl">Opportunity</span></div>
       </div>
       <table class="sig">
-        <tr><td>📈 TikTok</td><td>{fmt(r['views'])} views · {fmt(r['saves'])} saves · {int(r['fresh']*100)}% fresh(14d)</td></tr>
-        <tr><td>🛍️ ShopMy</td><td>{fmt(r['sm_clicks'])} clicks · {r['sm_prom']} creators link it<br><span class="muted">brand-level {fmt(r['sm_brand'])} clicks</span></td></tr>
+        <tr><td>📈 TikTok</td><td>{tiktok_cell}</td></tr>
+        <tr><td>🛍️ ShopMy</td><td>{shopmy_cell}</td></tr>
         <tr><td>👗 Pickle</td><td>{supply} rental listings of the style</td></tr>
       </table>
       <p class="desc">{desc}</p>
-      <div class="links"><a href="{d.get('product_url', '#')}" target="_blank">product ↗</a> &nbsp;·&nbsp; {tiktok_link} &nbsp;·&nbsp; {pickle_link}</div>
+      <div class="links"><a href="{d.get('product_url', '#')}" target="_blank">product ↗</a> &nbsp;·&nbsp; {tiktok_link} &nbsp;·&nbsp; {shopmy_link} &nbsp;·&nbsp; {pickle_link}</div>
     </div>"""
 
     feed = ""

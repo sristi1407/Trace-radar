@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 
 HERE = os.path.dirname(__file__)
 LOGDIR = os.path.join(HERE, "..", "data", "logs")
-BRANDS = ["aritzia/dresses", "realisation-par/dresses", "house-of-cb/dresses"]
+BRANDS = ["house-of-cb/dresses", "realisation-par/dresses", "nadine-merabi/dresses"]
 
 # ordered pipeline: discover new dresses -> gather signals -> score -> diff/alert
 STAGES = [

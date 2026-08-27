@@ -1,0 +1,142 @@
+{
+  "scraped_at": "2026-08-27",
+  "results": {
+    "cora": {
+      "name": "R\u00e9alisation Par The Cora (Mirage)",
+      "style": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "brand": {
+        "n_picks": 1,
+        "n_creators": 1,
+        "total_clicks": 2019,
+        "monthly_clicks": 7,
+        "max_promoters": 182,
+        "example": "https://realisationpar.com/coming-soon-br-the-meg-ethereal"
+      },
+      "style_picks": []
+    },
+    "merabi": {
+      "name": "Nadine Merabi \u2014 wedding-guest occasionwear",
+      "style": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "brand": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "style_picks": []
+    },
+    "sculpt": {
+      "name": "House of CB The Sculpt (bandage)",
+      "style": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "brand": {
+        "n_picks": 0,
+        "n_creators": 0,
+        "total_clicks": 0,
+        "monthly_clicks": 0,
+        "max_promoters": 0
+      },
+      "style_picks": []
+    }
+  },
+  "brand_leaderboard": [
+    [
+      "adidas",
+      462307
+    ],
+    [
+      "zappos",
+      345939
+    ],
+    [
+      "rhodeskin",
+      281924
+    ],
+    [
+      "stillhere",
+      275413
+    ],
+    [
+      "trysuri",
+      145272
+    ],
+    [
+      "showmeyourmumu",
+      128401
+    ],
+    [
+      "leftonfriday",
+      119191
+    ],
+    [
+      "kosas",
+      114861
+    ],
+    [
+      "brooklinen",
+      100370
+    ],
+    [
+      "artipoppe",
+      81774
+    ],
+    [
+      "aritzia",
+      80456
+    ],
+    [
+      "quince",
+      69697
+    ],
+    [
+      "vuoriclothing",
+      59393
+    ],
+    [
+      "labonnebrosse",
+      49282
+    ],
+    [
+      "hillhousehome",
+      37440
+    ],
+    [
+      "ruti",
+      36469
+    ],
+    [
+      "revolve",
+      32628
+    ],
+    [
+      "abercrombie",
+      31101
+    ],
+    [
+      "freepeople",
+      27294
+    ],
+    [
+      "velvetcaviar",
+      25194
+    ]
+  ]
+}

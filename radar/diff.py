@@ -9,7 +9,7 @@ Compares the two most recent snapshots of each tracked brand page:
 
 This is the piece that makes the radar "refresh daily, detect momentum, and alert."
 Run it after each daily scrape:
-    python -m radar.pickle_scraper aritzia/dresses realisation-par/dresses house-of-cb/dresses
+    python -m radar.pickle_scraper house-of-cb/dresses realisation-par/dresses nadine-merabi/dresses
     python -m radar.diff
 
 NOTE: a meaningful diff needs two *comparable* full scrapes (same scroll depth) on

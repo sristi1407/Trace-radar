@@ -1,0 +1,125 @@
+{
+  "scraped_at": "2026-08-27",
+  "hashtags": [
+    "fashionhaul",
+    "grwm",
+    "weddingguestdress",
+    "dresshaul",
+    "outfitinspo"
+  ],
+  "candidates": [
+    {
+      "brand": "Nadine Merabi",
+      "posts": 1,
+      "views": 9200000,
+      "saves": 28037,
+      "products": {
+        "nyc Jumpsuit": 1
+      },
+      "example": "https://www.tiktok.com/@jaegurley/video/7051407054237519150",
+      "top_views": 9200000,
+      "is_new": false,
+      "top_products": [
+        [
+          "nyc Jumpsuit",
+          1
+        ]
+      ]
+    },
+    {
+      "brand": "Revolve",
+      "posts": 3,
+      "views": 7400000,
+      "saves": 34476,
+      "products": {},
+      "example": "https://www.tiktok.com/@exercisewithextrafries/video/7091090890998959402",
+      "top_views": 3100000,
+      "is_new": true,
+      "top_products": []
+    },
+    {
+      "brand": "Free People",
+      "posts": 1,
+      "views": 3900000,
+      "saves": 56888,
+      "products": {},
+      "example": "https://www.tiktok.com/@stinkysselena/video/7671466484589251870",
+      "top_views": 3900000,
+      "is_new": true,
+      "top_products": []
+    },
+    {
+      "brand": "Norma Kamali",
+      "posts": 1,
+      "views": 2600000,
+      "saves": 3475,
+      "products": {},
+      "example": "https://www.tiktok.com/@maci.mckerchie/video/7672507028002082079",
+      "top_views": 2600000,
+      "is_new": true,
+      "top_products": []
+    },
+    {
+      "brand": "Cult Gaia",
+      "posts": 1,
+      "views": 1100000,
+      "saves": 5208,
+      "products": {},
+      "example": "https://www.tiktok.com/@madvetzz/video/7674603919019871519",
+      "top_views": 1100000,
+      "is_new": true,
+      "top_products": []
+    },
+    {
+      "brand": "House of CB",
+      "posts": 1,
+      "views": 897600,
+      "saves": 3393,
+      "products": {
+        "these house of cb dress": 1
+      },
+      "example": "https://www.tiktok.com/@lucy_livin/video/7677161633671695637",
+      "top_views": 897600,
+      "is_new": false,
+      "top_products": [
+        [
+          "these house of cb dress",
+          1
+        ]
+      ]
+    },
+    {
+      "brand": "Meshki",
+      "posts": 2,
+      "views": 58000,
+      "saves": 1448,
+      "products": {},
+      "example": "https://www.tiktok.com/@itsemmygirl/video/7675037876056362271",
+      "top_views": 43100,
+      "is_new": true,
+      "top_products": []
+    },
+    {
+      "brand": "Reformation",
+      "posts": 1,
+      "views": 43100,
+      "saves": 1033,
+      "products": {},
+      "example": "https://www.tiktok.com/@itsemmygirl/video/7675037876056362271",
+      "top_views": 43100,
+      "is_new": true,
+      "top_products": []
+    }
+  ],
+  "discovered_creators": [
+    "jaegurley",
+    "stinkysselena",
+    "exercisewithextrafries",
+    "maci.mckerchie",
+    "sheeeeoo_",
+    "madvetzz",
+    "lucy_livin",
+    "itsemmygirl",
+    "haleydamian"
+  ]
+}

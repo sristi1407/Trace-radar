@@ -15,7 +15,7 @@ Setup (one time):
 
 Run:
     python -m radar.pickle_scraper
-    python -m radar.pickle_scraper dresses aritzia/dresses realisation-par/dresses
+    python -m radar.pickle_scraper house-of-cb/dresses realisation-par/dresses nadine-merabi/dresses
 """
 import json, os, re, sys, time
 from datetime import datetime, timezone

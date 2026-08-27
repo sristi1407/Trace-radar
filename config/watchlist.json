@@ -18,15 +18,15 @@
       "product_url": "https://realisationpar.com/the-cora-mirage/"
     },
     {
-      "id": "giggle",
-      "name": "Aritzia Giggle Dress",
-      "brand": "Aritzia",
-      "pickle_category": "aritzia/dresses",
-      "match": "giggle",
-      "tiktok_hashtags": ["aritzia", "giggledress", "aritziagiggle"],
-      "shopmy_merchant": ["aritzia"],
-      "trends_terms": ["Aritzia Giggle dress"],
-      "product_url": "https://www.aritzia.com/us/en/product/giggle-dress/130273.html"
+      "id": "merabi",
+      "name": "Nadine Merabi — Nina Gold dress",
+      "brand": "Nadine Merabi",
+      "pickle_category": "nadine-merabi/dresses",
+      "match": "nina",
+      "tiktok_hashtags": ["nadinemerabi", "nadinemerabidress"],
+      "shopmy_merchant": ["nadinemerabi", "nadine merabi"],
+      "trends_terms": ["Nadine Merabi Nina gold dress"],
+      "product_url": "https://www.us.nadinemerabi.com/products/nina-gold-dress"
     },
     {
       "id": "sculpt",

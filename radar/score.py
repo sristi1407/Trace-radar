@@ -4,7 +4,7 @@ score.py — combine the signals into a per-dress scorecard + two rankings.
 
 Reads the latest snapshots this project produced:
   • Pickle per-brand pages  -> rental SUPPLY (total listings + listings of the trending style)
-  • TikTok                  -> DEMAND (brand-tag views/saves + freshness/momentum)
+  • TikTok                  -> DEMAND (specific-dress views/saves/creators; brand-tag as context)
   • ShopMy                  -> buy-intent (qualitative, from watchlist — see note)
 
 Outputs two deterministic, explainable rankings:
@@ -70,13 +70,17 @@ def main():
 
     rows = []
     for d in watch:
-        tt = tiktok.get(d["id"], {}).get("brand_heat", {}) or {}
+        node = tiktok.get(d["id"], {}) or {}
+        tt = node.get("this_dress", {}) or {}      # the SPECIFIC dress = honest signal
+        brand = node.get("brand_heat", {}) or {}    # brand-tag traffic = context only
         total, style = pickle_supply(d)
         rows.append({
             "id": d["id"], "name": d["name"], "brand": d["brand"],
             "views": tt.get("total_views", 0),
             "saves": tt.get("total_saves", 0),
             "fresh": tt.get("share_recent_14d", 0),   # momentum proxy
+            "creators": tt.get("n_creators", 0),
+            "brand_views": brand.get("total_views", 0),
             "supply_total": total, "supply_style": style,
             "shopmy": bool(d.get("shopmy_creators")) or d.get("shopmy_status", "partner-brand"),
         })
@@ -91,12 +95,12 @@ def main():
 
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     lines = [f"# TRACE Radar — scorecard ({stamp})\n"]
-    lines.append("| Dress | Trend | Opportunity | TikTok views | Saves | Fresh(14d) | Pickle supply (style) |")
+    lines.append("| Dress | Trend | Opportunity | TikTok views (dress) | Saves | Creators | Pickle supply (style) |")
     lines.append("|---|--:|--:|--:|--:|--:|--:|")
     for r in sorted(rows, key=lambda r: r["opportunity_score"], reverse=True):
         sup = "n/a" if r["supply_total"] is None else f"{r['supply_total']} ({r['supply_style']})"
         lines.append(f"| {r['name']} | {r['trend_score']} | **{r['opportunity_score']}** | "
-                     f"{r['views']:,} | {r['saves']:,} | {r['fresh']} | {sup} |")
+                     f"{r['views']:,} | {r['saves']:,} | {r['creators']} | {sup} |")
 
     lines.append("\n**Trend Score** = 0.5·views + 0.3·saves + 0.2·freshness (normalized across dresses).")
     lines.append("**Opportunity Score** = Trend Score × supply-gap (higher when the trending style has "

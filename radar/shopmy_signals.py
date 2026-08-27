@@ -5,7 +5,7 @@ shopmy_signals.py — BUY-INTENT layer (the third platform).
 ShopMy is creator-keyed: you scrape creators, then see which products they link
 to a retailer, with click counts. So this reads a list of fashion creators'
 RECENT picks (tab="latest") via Apify, then measures, per tracked dress:
-  • exact-style hits  — picks whose title mentions the style ("cora"/"giggle"/"sculpt")
+  • exact-style hits  — picks whose title mentions the style ("cora"/"merabi"/"sculpt")
   • brand hits        — picks on that brand's retailer (merchant_name)
   • clicks + promoters — buy-intent (num_promoters = how many creators link that
                           product across ALL of ShopMy = catalog-wide breadth)
