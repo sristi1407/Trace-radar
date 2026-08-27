@@ -116,6 +116,13 @@ def main():
             pickle_link = f'<a href="{pk["url"]}" target="_blank">rent this on pickle ↗{rent}</a>'
         else:    # brand is on Pickle but this exact dress is not -> the gap, made clickable
             pickle_link = f'<a href="{cat_url}" target="_blank" class="muted">no exact rental yet · browse brand ↗</a>'
+        # TikTok proof: link the *dress-specific* hashtag (contains the match term),
+        # not the noisy brand tag — a live trending feed, no homonym risk.
+        tags = d.get("tiktok_hashtags") or []
+        mt = (d.get("match") or "").lower()
+        tt_tag = next((h for h in tags if mt and mt in h.lower()), tags[0] if tags else "")
+        tiktok_link = (f'<a href="https://www.tiktok.com/tag/{tt_tag}" target="_blank">'
+                       f'trending on TikTok #{tt_tag} ↗</a>') if tt_tag else ""
         supply = "n/a" if r["total"] is None else f"{r['style']} <span class='muted'>of {r['total']}</span>"
         cards += f"""
     <div class="card">
@@ -131,7 +138,7 @@ def main():
         <tr><td>👗 Pickle</td><td>{supply} rental listings of the style</td></tr>
       </table>
       <p class="desc">{desc}</p>
-      <div class="links"><a href="{d.get('product_url', '#')}" target="_blank">product ↗</a> &nbsp;·&nbsp; {pickle_link}</div>
+      <div class="links"><a href="{d.get('product_url', '#')}" target="_blank">product ↗</a> &nbsp;·&nbsp; {tiktok_link} &nbsp;·&nbsp; {pickle_link}</div>
     </div>"""
 
     feed = ""
