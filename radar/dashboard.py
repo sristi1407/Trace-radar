@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from urllib.parse import quote
 
 from .match import matches_style
+from .velocity import compute as vel_compute, label as vel_label
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -98,6 +99,7 @@ def main():
     tt = load("tiktok_*.json").get("results", {})
     sm = load("shopmy_*.json").get("results", {})
     disc = load("discover_*.json")
+    vel, _, _ = vel_compute()          # per-post momentum from the two latest snapshots
 
     rows = []
     for d in wl["dresses"]:
@@ -170,6 +172,7 @@ def main():
       </div>
       <table class="sig">
         <tr><td>📈 TikTok</td><td>{tiktok_cell}</td></tr>
+        <tr><td>⚡ Momentum</td><td>{vel_label(vel.get(d['id']))}</td></tr>
         <tr><td>🛍️ ShopMy</td><td>{shopmy_cell}</td></tr>
         <tr><td>👗 Pickle</td><td>{supply} rental listings of the style</td></tr>
       </table>

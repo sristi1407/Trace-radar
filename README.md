@@ -49,7 +49,7 @@ Each dress evaluated across the factors the brief asks for:
 | Factor | **Nadine Merabi** (Nina Gold) | **Cora** (Réalisation Par) | **The Sculpt** (House of CB) |
 |---|---|---|---|
 | **Current heat (brand-anchored)** | **~1.8M dress views, 24 creators** (top) | ~245K views, 10 creators | **0 confirmed** — the 4.9M "sculpt" traffic was 100% Pilates |
-| **Momentum** | freshness ~0.22 (flat across all three; a real per-post velocity is the honest next step) | ~0.15 | n/a — no real posts captured |
+| **Momentum (per-post velocity)** | needs a 2nd comparable snapshot | **+2.1% over 2d** (12 shared posts, +2.5K views/day) | n/a — 0 real posts |
 | **Creator activity (verified)** | @kathjay89 (108K), @kathryn.mueller (139K), @omolabbake | @courtneyyyyy__, @amirajasminnn, @jaderselise (55K) | **none survive brand-anchoring** (all Pilates) |
 | **Cross-platform breadth** | TikTok ✓ · Pickle ✓ · ShopMy (searchable) | **all three** (TikTok ✓ · ShopMy ✓ · Pickle ✓) | capture failed (homonym) · Pickle 0 |
 | **Commerce intent (ShopMy)** | on ShopMy (searchable); seed the 24 creators | **proven — ~34.7K _lifetime_ clicks, 991 promoters** (pinned by @sophcrump, @nadiaorr → [product](https://shopmy.us/shop/product/2128245)); **recent ≈ 0** — real but cooling | — |
@@ -112,12 +112,13 @@ Running this daily surfaced failure modes I'd engineer around next — all drawn
 discover.py ─ [INVERSE SEARCH] trending hashtags → extract brand/product → surface NEW viral dresses
       │        (feeds the watchlist automatically — this is how Nadine Merabi was found)
       ▼
-TikTok  (Apify)      ─ demand: views, saves, freshness/momentum (specific-dress + brand-tag context)
+TikTok  (Apify)      ─ demand: views, saves (brand-anchored — see brand_terms; kills homonyms)
 ShopMy  (Apify)      ─ buy-intent: creator links + clicks + #promoters per product
 Pickle  (Playwright) ─ supply: rental listings (word-aware + fuzzy match, match.py)
       │
       ▼
-score.py ─ Trend Score + Opportunity Score      diff.py ─ [AUTOMATED] daily diff → alert on momentum
+score.py ─ Trend + Opportunity      velocity.py ─ per-post Δviews/day (demand momentum)
+      │                              diff.py ─ Pickle turnover (supply momentum, overlap-guarded)
       │
       ▼
 dashboard.py ─ single-page visual UI (dashboard.html); each card links all 3 platforms
@@ -127,7 +128,7 @@ dashboard.py ─ single-page visual UI (dashboard.html); each card links all 3 p
 Two recurring pieces, both designed to run daily:
 
 1. **Inverse-search discovery (`discover.py`) — the headline.** Instead of checking a known watchlist, it scrapes trending fashion hashtags (`#fashionhaul`, `#grwm`, `#weddingguestdress`…), extracts brand/product mentions from captions, and surfaces *emerging* dresses **not on any watchlist**. A live run flagged **Nadine Merabi at ~9.2M views as 🆕 NEW** — which I then **promoted into the watchlist and validated end-to-end** (1.8M brand views, 24 creators, signature Nina Gold SKU with 10 rentable copies). The very next run then shows it as `(tracked)` and surfaces the *next* wave — **Revolve (7.4M), Norma Kamali (2.6M), Cult Gaia (1.1M)**. This is the "alert TRACE when *any* dress goes viral" engine: **discovery, not just monitoring — and the discover→track loop closing in one build.**
-2. **Momentum + a comparability guard (`diff.py` + `score.py`).** Daily Pickle snapshot-diff for rental velocity — but I found Pickle's brand pages serve a **rotating subset** (two same-depth scrapes two days apart share only ~33% of listings), so a naive UUID-diff over-reports turnover wildly. The diff now **suppresses turnover unless the snapshots genuinely overlap** (a real 10% survived for Nadine Merabi's 1-day pair) rather than firing "half the inventory rented overnight." Reliable velocity needs a stable listing ID / inventory feed; until then momentum leans on the TikTok signals. `score.py` re-ranks after each run.
+2. **Momentum — measured two ways, both guarded (`velocity.py` + `diff.py`).** For *demand* momentum, `velocity.py` intersects consecutive TikTok snapshots **by post id** and computes Δviews/day on the *same* posts — a real acceleration curve, not the flat freshness proxy (the Cora's 12 shared posts grew **+2.1% in two days**; Sculpt has 0 real posts; Merabi awaits its 2nd snapshot). For *supply* momentum, `diff.py` diffs Pickle — but I found Pickle's brand pages serve a **rotating subset** (~33% listing overlap), so it **suppresses turnover unless snapshots genuinely overlap** rather than firing "half the inventory rented overnight." Same comparability principle applied to both diffs. `score.py` re-ranks after each run.
 
 Together they demonstrate a credible path to a system that **refreshes daily, detects momentum, and alerts**. *(Bonus findings that made this work: Pickle's web is server-rendered/scrapable — richer than the brief assumed — so supply needs no API key; and style matching is word-aware + fuzzy (`match.py`), so counts are robust to title variants.)*
 

@@ -27,6 +27,8 @@ STAGES = [
     ["radar.shopmy_signals", "--from-discover"],   # consume creators discover.py just found
     ["radar.score"],
     ["radar.diff"],
+    ["radar.velocity"],     # per-post momentum (Δviews on the same posts across snapshots)
+    ["radar.dashboard"],    # regenerate the UI so it never drifts from the data
 ]
 
 

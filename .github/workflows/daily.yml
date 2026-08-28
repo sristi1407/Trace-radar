@@ -36,6 +36,7 @@ jobs:
           python -m radar.shopmy_signals  || true
           python -m radar.score
           python -m radar.diff            || true
+          python -m radar.velocity        || true   # per-post momentum
           python -m radar.dashboard
 
       - name: Commit refreshed data + dashboard
