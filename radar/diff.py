@@ -12,12 +12,18 @@ Run it after each daily scrape:
     python -m radar.pickle_scraper house-of-cb/dresses realisation-par/dresses nadine-merabi/dresses
     python -m radar.diff
 
-NOTE: a meaningful diff needs two *comparable* full scrapes (same scroll depth) on
-different days. Diffing a capped snapshot against a full one over-reports — so run
-the full scraper daily going forward.
+NOTE: a meaningful turnover diff needs the two snapshots to track the *same set*. Two
+things break that: (a) different scroll depth (capped vs full), and — discovered here —
+(b) Pickle serving a *rotating subset*: two same-depth scrapes two days apart share only
+~33% of listings, so raw "disappeared" is mostly sampling, not rentals. The comparability
+guard below catches both and suppresses turnover instead of firing false alerts. Reliable
+rental velocity needs a stable per-listing ID or the full inventory feed (an integration),
+not the paginated brand page — so momentum here leans on the TikTok signals, not Pickle churn.
 """
-import glob, json, os, re
+import glob, json, os
 from datetime import datetime, timezone
+
+from .match import matches_style
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -38,8 +44,8 @@ def load(path):
 
 
 def style_count(listings, term):
-    term = (term or "").lower()
-    return sum(1 for x in listings if term and term in (x.get("title") or "").lower())
+    # word-aware + fuzzy (match.py), same as score.py — so "cora" won't match "coral"/"decorated"
+    return sum(1 for x in listings if matches_style(x.get("title"), term))
 
 
 def main():
@@ -57,6 +63,21 @@ def main():
         old, new = load(pair[0]), load(pair[1])
         old_ids = {x["uuid"]: x for x in old["listings"]}
         new_ids = {x["uuid"]: x for x in new["listings"]}
+        # comparability guard. Two failure modes make a diff meaningless:
+        #   (a) different scroll depth (capped vs full)  -> caught by the count ratio
+        #   (b) the brand page serves a *rotating subset* -> caught by low UUID overlap
+        # Empirically Pickle does (b): two same-depth scrapes 2 days apart share only ~33% of
+        # UUIDs, so "disappeared" is mostly sampling, not rentals. Suppress rather than fire noise.
+        ratio = len(new_ids) / max(len(old_ids), 1)
+        overlap = len(old_ids.keys() & new_ids.keys()) / max(len(old_ids), 1)
+        if not (0.67 <= ratio <= 1.5) or overlap < 0.70:
+            reason = ("different scroll depth" if not (0.67 <= ratio <= 1.5)
+                      else f"only {overlap:.0%} of listings persist across scrapes — the brand page serves a rotating subset")
+            out.append(f"## {d['name']}  ({os.path.basename(pair[0])[-15:-5]} → {os.path.basename(pair[1])[-15:-5]})")
+            out.append(f"- total listings: {len(old_ids)} → {len(new_ids)}")
+            out.append(f"_⚠️ Not comparable ({reason}). Turnover suppressed — a reliable rental-velocity diff needs a "
+                       f"stable per-listing ID or the full inventory feed, not the paginated brand page._\n")
+            continue
         disappeared = [old_ids[i] for i in old_ids if i not in new_ids]  # rented/sold
         appeared = [new_ids[i] for i in new_ids if i not in old_ids]     # new supply
         turnover = len(disappeared) / len(old_ids) if old_ids else 0
