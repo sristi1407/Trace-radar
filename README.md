@@ -15,7 +15,7 @@ Three currently-trending dresses, chosen to show three *different* patterns for 
 | Dress (brand) | TikTok (the dress) | ShopMy (buy-intent) | Pickle (supply) | Pattern → what TRACE should do |
 |---|---|---|---|---|
 | **House of CB — The Sculpt** | **4.9M views · 19 creators** (top demand) | thin in creator sample | **0 of 798** | **Scarcity gap** → build the market: recruit owners *before* supply exists |
-| **Réalisation Par — The Cora** | 1.0M views · 29 creators | **69.5K clicks · 991 creators link it** | **76 of 800** | **Convergence** → match renters/buyers to owners *now* |
+| **Réalisation Par — The Cora** | 1.0M views · 29 creators | **34.7K clicks · 991 creators link it** | **76 of 800** | **Convergence** → match renters/buyers to owners *now* |
 | **Nadine Merabi — Nina Gold** | 1.8M views · 24 creators (brand-level) | featured on ShopMy (clicks not sampled) | **10 Nina rentals** (gold from $60) | **High-value liquidity** → monetize the signature SKU |
 
 ### The exact products (specific styles, not just brands)
@@ -53,13 +53,13 @@ Each dress evaluated across the factors the brief asks for:
 | **Recency** | newest ~2 days ago | newest <1 day ago | newest this week |
 | **Creator activity** | large program (suelamehmedi + HOCB influencers) | many & distinct (amirajasminnn, nadiaorr_, lindleysavage, sophcrump) | 24 wedding/bridal creators (kathjay89, maisie_crompton, alexxcoll…) |
 | **Cross-platform breadth** | **TikTok-dominant** (ShopMy thin · not Pickle) | **all three** (TikTok ✓ · ShopMy ✓ · Pickle ✓) | TikTok ✓ · **Pickle ✓ (deep)** · ShopMy to-seed |
-| **Commerce intent (ShopMy)** | **on ShopMy** (searchable), but not in our 14-creator sample | **strong — 69,540 clicks; 991 creators link the Cora** | **on ShopMy** (searchable); magnitude needs the wedding creators seeded |
+| **Commerce intent (ShopMy)** | **on ShopMy** (searchable), but not in our 14-creator sample | **strong — ~34.7K clicks; 991 promoters link the Cora** (pinned by @sophcrump, @nadiaorr) | **on ShopMy** (searchable); magnitude needs the wedding creators seeded |
 | **Rental liquidity** | **0 of 798** HOCB dresses | **76 listings** on Pickle ($50–90/wk) — deep | **10 Nina Gold copies** (gold from $60) — liquid for one SKU |
 | **→ Pattern** | **Scarcity gap** | **Convergence** | **High-value liquidity** |
 
 **Product & evidence links** (all verified live):
 - **The Sculpt:** [product](https://www.houseofcb.com/the-sculpt-black-bandage-mini-dress.html) · [Pickle — brand deep, 0 Sculpt](https://www.shoponpickle.com/shop/rent/house-of-cb/dresses) · [TikTok](https://www.tiktok.com/search?q=the%20sculpt%20bandage%20mini%20dress%20house%20of%20cb) *(#thesculpt is Pilates-polluted — I use a precise brand+style search)*
-- **Cora:** [product](https://realisationpar.com/the-cora-mirage/) · [Pickle rentals (76)](https://www.shoponpickle.com/shop/rent/realisation-par/dresses) · [TikTok](https://www.tiktok.com/tag/coradress)
+- **Cora:** [product](https://realisationpar.com/the-cora-mirage/) · [Pickle rentals (76)](https://www.shoponpickle.com/shop/rent/realisation-par/dresses) · [TikTok](https://www.tiktok.com/tag/coradress) · [ShopMy product](https://shopmy.us/shop/product/2128245)
 - **Nadine Merabi — Nina Gold:** [product](https://www.us.nadinemerabi.com/products/nina-gold-dress) · [Pickle rental ($60)](https://www.shoponpickle.com/product/0c69581d-803f-11ef-96eb-71bced824269) · [TikTok](https://www.tiktok.com/search?q=nadine%20merabi%20dress%20nina%20gold) · [ShopMy](https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular) *(featured on ShopMy; click magnitude not in our 14-creator sample)*
 
 ## Creators to recruit (the other half of the ask)
@@ -75,7 +75,7 @@ The brief weights creators alongside dresses. These three are already *driving* 
 
 ## Recommendation for TRACE
 1. **Build the wedge around The Sculpt (House of CB).** It has the loudest demand (~4.9M dress-level views) and **zero** rental supply of the trending style — exactly TRACE's presale play: *organize demand and recruit owners before conventional supply exists.* **⚠️ Validate first:** the `#thesculpt` tag is contaminated by Pilates content, so I'd treat its #1 scorecard rank as an **upper bound** and confirm the true dress-share with an LLM relevance pass (below) before committing spend.
-2. **Capture immediate liquidity with the Cora (Réalisation Par).** Demand *and* 76 rental listings *and* the strongest measured buy-intent (**991 creators link it, 69.5K clicks**) already exist — so TRACE can match renters/buyers to owners **today**. This is the safest, proof-of-category play.
+2. **Capture immediate liquidity with the Cora (Réalisation Par).** Demand *and* 76 rental listings *and* the strongest measured buy-intent (**991 creators link it, 34.7K clicks**) already exist — so TRACE can match renters/buyers to owners **today**. This is the safest, proof-of-category play.
 3. **Monetize the signature SKU — Nadine Merabi's Nina Gold.** 10 rentable copies (gold from **$60**) plus real wedding-guest demand (1.8M brand views, 24 creators) = **high GMV per rental**. Onboard the 24 discovered creators to light up ShopMy buy-intent and close the loop.
 4. **The absence of a Pickle listing is a buy signal, not a dead end** — Sculpt is where TRACE *creates* the market; Cora and Nadine Merabi are where it *monetizes* one that already exists.
 

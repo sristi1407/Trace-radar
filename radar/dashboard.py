@@ -39,7 +39,7 @@ TIKTOK_LINK = {
 # ShopMy shop-search per dress (proves creators feature it — our 14-creator scrape sample
 # missed them, but ShopMy's directory surfaces them). ?query= opens in a real browser.
 SHOPMY_LINK = {
-    "cora":   "https://shopmy.us/shop?query=realisation+par+cora+dress",
+    "cora":   "https://shopmy.us/shop/product/2128245",   # direct ShopMy product page for The Cora (path-based)
     "sculpt": "https://shopmy.us/shop?query=house+of+cb+bandage-mini-dress",
     "merabi": "https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular",
 }
