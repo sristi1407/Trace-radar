@@ -85,7 +85,7 @@ def main():
                    f"({pct:.0f}% of the {len(page)}-item page — the rest are other labels) · rent {rent}")
         out.append(f"- **Cities:** {cities}")
         out.append(f"- **Sizes:** {sizes}")
-        sku = summarize(L, style=d.get("match"))            # SKU-level (e.g. the Nina Gold)
+        sku = summarize(page, style=d.get("match"))         # SKU-level on the full page (recovers mis-parsed brands)
         if 0 < sku["n"] < len(L):
             sc, ss, sr = _fmt(sku)
             out.append(f"- **'{d['match']}' SKU:** {sku['n']} copies · sizes {ss} · {sc} · rent {sr}")

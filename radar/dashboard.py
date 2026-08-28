@@ -98,10 +98,10 @@ def main():
         bh = node.get("brand_heat", {}) or {}      # brand-tag traffic = context only
         smv = sm.get(d["id"], {})
         pk = load(f"pickle_{d['pickle_category'].replace('/', '_')}_*.json")
-        listings = brand_filter(pk.get("listings", []), d.get("brand"))   # Pickle pages are contaminated
-        total = len(listings) if listings else None
-        matched = [x for x in listings if matches_style(x.get("title"), d.get("match"))] if listings else []
-        style = len(matched) if listings else None
+        page = pk.get("listings", [])
+        total = len(brand_filter(page, d.get("brand"))) if page else None   # denominator: real brand listings
+        matched = [x for x in page if matches_style(x.get("title"), d.get("match"))]  # numerator: all style matches on page
+        style = len(matched) if page else None
         # deep-link to the actual matching rental (cheapest rent first); None => no exact listing
         best = min(matched, key=lambda x: x.get("rent_usd") or 10**9) if matched else None
         rows.append({

@@ -39,10 +39,13 @@ def pickle_supply(dress):
     snap = load_json(latest(f"pickle_{cat}_*.json"))
     if not snap:
         return None, None
-    listings = brand_filter(snap["listings"], dress.get("brand"))   # Pickle pages are contaminated
+    page = snap["listings"]
     term = dress.get("match") or ""
-    style = sum(1 for x in listings if matches_style(x.get("title"), term))
-    return len(listings), style
+    total = len(brand_filter(page, dress.get("brand")))   # denominator: the brand's real listings
+    # numerator: match the STYLE name across the full page — recovers listings whose brand field was
+    # mis-parsed (typos like "Realisaiton Par", "SOLD OUT" prefixes) but are clearly the style.
+    style = sum(1 for x in page if matches_style(x.get("title"), term))
+    return total, style
 
 
 def norm(values):
