@@ -1,16 +1,21 @@
+# Pinned for reproducibility (versions this was built + verified against).
+
 # Core
-requests
-python-dotenv
+requests==2.34.2
+python-dotenv==1.2.3
 
 # Pickle scraping (headless browser — also run: playwright install chromium)
-playwright
+playwright==1.62.0
 
 # Apify actors (TikTok, ShopMy)
-apify-client
+apify-client==3.1.3
 
-# Fuzzy style matching (match.py)
-rapidfuzz
+# Fuzzy style matching (match.py) — optional; match.py falls back to whole-word if absent
+rapidfuzz==3.14.5
 
-# Optional
-beautifulsoup4
-pandas
+# Tests (optional — tests also run standalone: python tests/test_match.py)
+pytest>=7
+
+# Optional (exploration)
+beautifulsoup4==4.15.0
+pandas==3.0.5

@@ -64,6 +64,16 @@ def gap_factor(style_supply):
     return 0.15
 
 
+# Trend Score weights (views, saves, freshness) — the single source of truth; dashboard imports these.
+TREND_WEIGHTS = (0.5, 0.3, 0.2)
+
+
+def trend(v, s, f):
+    """Blend normalized views/saves/freshness into a 0-100 Trend Score."""
+    wv, ws, wf = TREND_WEIGHTS
+    return round(100 * (wv * v + ws * s + wf * f), 1)
+
+
 def main():
     watch = json.load(open(WATCHLIST))["dresses"]
     tiktok = (load_json(latest("tiktok_*.json")) or {}).get("results", {})
@@ -90,7 +100,10 @@ def main():
     ns = norm([r["saves"] for r in rows])
     nf = norm([r["fresh"] for r in rows])
     for r, v, s, f in zip(rows, nv, ns, nf):
-        r["trend_score"] = round(100 * (0.5 * v + 0.3 * s + 0.2 * f), 1)
+        # "measured" = we actually isolated dress-level demand. Brand heat with zero this-dress
+        # posts (e.g. Sculpt — 100% Pilates) is UNMEASURED, not zero opportunity.
+        r["measured"] = r["views"] > 0 or r["brand_views"] == 0
+        r["trend_score"] = trend(v, s, f)
         r["opportunity_score"] = round(r["trend_score"] * gap_factor(r["supply_style"]), 1)
 
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -99,12 +112,14 @@ def main():
     lines.append("|---|--:|--:|--:|--:|--:|--:|")
     for r in sorted(rows, key=lambda r: r["opportunity_score"], reverse=True):
         sup = "n/a" if r["supply_total"] is None else f"{r['supply_total']} ({r['supply_style']})"
-        lines.append(f"| {r['name']} | {r['trend_score']} | **{r['opportunity_score']}** | "
+        opp = f"**{r['opportunity_score']}**" if r["measured"] else "**unmeasured**"
+        lines.append(f"| {r['name']} | {r['trend_score']} | {opp} | "
                      f"{r['views']:,} | {r['saves']:,} | {r['creators']} | {sup} |")
 
     lines.append("\n**Trend Score** = 0.5·views + 0.3·saves + 0.2·freshness (normalized across dresses).")
     lines.append("**Opportunity Score** = Trend Score × supply-gap (higher when the trending style has "
-                 "little/no Pickle rental supply). Pickle supply shows *total brand listings (of the trending style)*.")
+                 "little/no Pickle rental supply). **`unmeasured`** = we couldn't isolate dress-level demand "
+                 "(e.g. Sculpt is 100% Pilates) — *not* zero opportunity; the score can't tell those apart.")
     lines.append("\n> ShopMy is assessed at brand level (all tracked brands are ShopMy partners; creators link them). "
                  "Full per-product ShopMy scraping via api.shopmy.us is the next automation step.")
 

@@ -14,6 +14,7 @@ from urllib.parse import quote
 
 from .match import matches_style, brand_filter
 from .velocity import compute as vel_compute, label as vel_label
+from .score import norm, gap_factor, trend   # single source of truth for scoring
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -83,17 +84,6 @@ def fmt(n):
     return str(int(n))
 
 
-def norm(vals):
-    lo, hi = min(vals), max(vals)
-    return [0.5] * len(vals) if hi == lo else [(v - lo) / (hi - lo) for v in vals]
-
-
-def gap_factor(style):
-    if style is None:
-        return 0.5
-    return 1.0 if style == 0 else 0.6 if style <= 5 else 0.35 if style <= 20 else 0.15
-
-
 def main():
     wl = json.load(open(WATCHLIST))
     tt = load("tiktok_*.json").get("results", {})
@@ -127,7 +117,8 @@ def main():
 
     nv, ns, nf = norm([r["views"] for r in rows]), norm([r["saves"] for r in rows]), norm([r["fresh"] for r in rows])
     for r, v, s, f in zip(rows, nv, ns, nf):
-        r["trend"] = round(100 * (0.5 * v + 0.3 * s + 0.2 * f), 1)
+        r["trend"] = trend(v, s, f)
+        r["measured"] = r["views"] > 0 or r["brand_views"] == 0   # 0 posts + brand heat = unmeasured, not zero
         r["opp"] = round(r["trend"] * gap_factor(r["style"]), 1)
 
     cards = ""
@@ -169,7 +160,7 @@ def main():
       <h3>{d['name']}</h3>
       <div class="scores">
         <div><span class="big">{r['trend']}</span><span class="lbl">Trend</span></div>
-        <div><span class="big" style="color:{color}">{r['opp']}</span><span class="lbl">Opportunity</span></div>
+        <div><span class="big" style="color:{color}">{r['opp'] if r['measured'] else 'n/a'}</span><span class="lbl">Opportunity{'' if r['measured'] else ' (unmeasured)'}</span></div>
       </div>
       <table class="sig">
         <tr><td>📈 TikTok</td><td>{tiktok_cell}</td></tr>
