@@ -17,6 +17,8 @@ HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
 MIN_SHARED = 3          # need a few shared posts for a meaningful rate
 MIN_OVERLAP = 0.5       # ...and they must actually be the same set
+MOMENTUM_ALERT = 20.0   # %/day on the SAME posts = "accelerating". Keyed on per-post velocity,
+                        # NOT raw day-over-day totals (which fire on sample churn — see diff.py's rotation finding).
 
 
 def _date(path):
@@ -79,6 +81,23 @@ def main():
              "freshness proxy can't see acceleration; this can. Same overlap guard as `diff.py`.\n"]
     for did, v in vel.items():
         lines.append(f"- **{did}** — {label(v)}")
+
+    # Momentum alert — fires on per-post velocity (same posts), so sample churn can't trigger it.
+    alerts, measured = [], []
+    for did, v in vel.items():
+        if v.get("status") != "ok":
+            continue
+        per_day = v["pct"] / v["days"]
+        measured.append(f"{did} {per_day:+.1f}%/day")
+        if per_day >= MOMENTUM_ALERT:
+            alerts.append(f"🚀 {did}: accelerating {v['pct']:+.1f}% over {v['days']}d ({per_day:.1f}%/day)")
+    lines.append(f"\n## ⚠️ Momentum alerts  (trigger: ≥{MOMENTUM_ALERT:.0f}%/day on per-post velocity)")
+    if alerts:
+        lines += [f"- {a}" for a in alerts]
+    else:
+        detail = ", ".join(measured) or "none measurable yet"
+        lines.append(f"- **(none — calibrated but unfired)**: {detail} — below the +{MOMENTUM_ALERT:.0f}%/day "
+                     f"trigger. Merabi fires once its 2nd comparable snapshot lands (next daily run).")
     text = "\n".join(lines)
     print("\n" + text + "\n")
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")

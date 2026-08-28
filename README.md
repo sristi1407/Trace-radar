@@ -151,10 +151,10 @@ Alerts are tiered, with a per-dress cooldown so nothing spams daily:
 | Level | Trigger (on **raw** signals, not the normalized score) | Action |
 |---|---|---|
 | 🟢 **Discovery** | `discover.py` finds a *new* product with **> 1M views** | Log + daily digest |
-| 🟡 **Momentum** | a tracked dress's **raw views or saves rise > 30% day-over-day** (from the dated snapshots), or its Pickle supply drops ≥ 3 | Telegram `#trending` |
+| 🟡 **Momentum** | **per-post velocity ≥ 20%/day** (`velocity.py` — Δviews on the *same* posts, so sample churn can't trigger it), or Pickle supply drops ≥ 3 | Telegram `#trending` |
 | 🔴 **Gap** | **> 2M raw views** (trailing) **and** Pickle style-supply = 0 | Telegram + email + draft a TRACE campaign |
 
-> **Why raw, not the Trend score:** the Trend score is min-max *normalized within each run*, so the top dress is always ~100 and the bottom ~0 — a threshold like "Trend > 70" would fire on whatever's #1 that day, and day-over-day deltas would be dominated by set composition, not real movement. So alerts key off **absolute raw signals** (views, saves, listing counts) from the dated snapshots; the normalized score is only for *within-run ranking*. (Once `run_daily`/the Action accumulate a 30-day baseline, these become percentile triggers.)
+> **Why per-post velocity, not raw totals or the Trend score:** the Trend score is min-max *normalized within each run* ("Trend > 70" would just fire on whatever's #1 that day). But **raw day-over-day totals are just as wrong** — they'd fire on *sample churn* (a different set of posts scraped), which the rotating-page finding showed is large. So the Momentum trigger keys off **per-post velocity** (`velocity.py`: Δviews on the *same* post ids, overlap-guarded) — the only demand signal immune to set composition. It's **currently calibrated but unfired** (Cora is +1.1%/day, below the +20%/day trigger; Merabi fires once its 2nd comparable snapshot lands — the next daily run). Supply alerts use raw listing counts, which are absolute. (Both graduate to percentile triggers once the Action accumulates a 30-day baseline.)
 
 **Cooldown:** a dress won't re-alert at the same level for 7 days — it only re-fires if it **escalates** a level (🟡 → 🔴) or re-accelerates after cooling. Keeps the signal high and the channel quiet. *(`diff.py` implements the threshold logic; this tiering + cooldown is the policy layer on top.)*
 
