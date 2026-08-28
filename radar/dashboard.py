@@ -12,7 +12,7 @@ import glob, json, os
 from datetime import datetime, timezone
 from urllib.parse import quote
 
-from .match import matches_style
+from .match import matches_style, brand_filter
 from .velocity import compute as vel_compute, label as vel_label
 
 HERE = os.path.dirname(__file__)
@@ -22,7 +22,7 @@ OUT = os.path.join(HERE, "..", "dashboard.html")
 
 PATTERN = {
     "cora":   ("Convergence", "#16a34a", "Real brand-anchored demand (245K) + 76 rentals + proven (now-cooling) ShopMy → match renters to owners today."),
-    "merabi": ("High-value convergence", "#0ea5e9", "Top real demand (1.8M, 24 creators) + 10 Nina rentals (gold from $60) → the strongest all-round play; onboard the creators to light up ShopMy."),
+    "merabi": ("High-value convergence", "#0ea5e9", "Top demand — but brand/occasion-level (1.8M; people search 'a Nadine Merabi for a wedding', not 'Nina'), anchored to the Nina Gold SKU (10 rentals). The strongest all-round play; onboard the creators to light up ShopMy."),
     "sculpt": ("Signal contamination", "#dc2626", "Looked #1 at 4.9M — but brand-anchoring exposed it as 100% Pilates (homonym). 0 confirmed dress posts in our sample; the real dress needs brand-anchored / LLM capture."),
 }
 
@@ -108,7 +108,7 @@ def main():
         bh = node.get("brand_heat", {}) or {}      # brand-tag traffic = context only
         smv = sm.get(d["id"], {})
         pk = load(f"pickle_{d['pickle_category'].replace('/', '_')}_*.json")
-        listings = pk.get("listings", [])
+        listings = brand_filter(pk.get("listings", []), d.get("brand"))   # Pickle pages are contaminated
         total = len(listings) if listings else None
         matched = [x for x in listings if matches_style(x.get("title"), d.get("match"))] if listings else []
         style = len(matched) if listings else None
@@ -153,8 +153,9 @@ def main():
         sm_url = SHOPMY_LINK.get(d["id"])
         shopmy_link = f'<a href="{sm_url}" target="_blank">on ShopMy ↗</a>' if sm_url else ""
         supply = "n/a" if r["total"] is None else f"{r['style']} <span class='muted'>of {r['total']}</span>"
-        # TikTok: the SPECIFIC dress is the headline; brand-tag traffic is muted context
-        tiktok_cell = (f"{fmt(r['views'])} views · {fmt(r['saves'])} saves · {r['tt_creators']} creators"
+        # TikTok: specific-dress headline; if it's ~all of brand_heat, it's really brand-level (label it honestly)
+        lvl = " <span class='muted'>(brand/occasion-level)</span>" if r['brand_views'] and r['views'] >= 0.9 * r['brand_views'] else ""
+        tiktok_cell = (f"{fmt(r['views'])} views · {fmt(r['saves'])} saves · {r['tt_creators']} creators{lvl}"
                        f"<br><span class='muted'>brand tag {fmt(r['brand_views'])} views · {int(r['fresh']*100)}% posted &lt;14d</span>")
         if r['sm_clicks'] or r['sm_prom']:
             # clicks are lifetime; flag when recent monthly activity is ~0 (don't oversell "hot now")

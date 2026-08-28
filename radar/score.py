@@ -17,7 +17,7 @@ Run:
 import json, os, glob
 from datetime import datetime, timezone
 
-from .match import matches_style
+from .match import matches_style, brand_filter
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -39,7 +39,7 @@ def pickle_supply(dress):
     snap = load_json(latest(f"pickle_{cat}_*.json"))
     if not snap:
         return None, None
-    listings = snap["listings"]
+    listings = brand_filter(snap["listings"], dress.get("brand"))   # Pickle pages are contaminated
     term = dress.get("match") or ""
     style = sum(1 for x in listings if matches_style(x.get("title"), term))
     return len(listings), style

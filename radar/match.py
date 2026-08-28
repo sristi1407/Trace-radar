@@ -13,11 +13,25 @@ Strategy:
 pip install rapidfuzz   (falls back to word-match only if not installed)
 """
 import re
+import unicodedata
 
 try:
     from rapidfuzz import fuzz
 except ImportError:
     fuzz = None
+
+
+def _norm(s):
+    # lowercase + strip accents, so "Réalisation" and "Realisation" match (the brand field has both)
+    return unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+
+
+def brand_filter(listings, brand):
+    """Keep only listings that are actually this brand — Pickle's brand pages are contaminated
+    (the Nadine Merabi page is only ~38% Nadine Merabi), so the honest supply denominator is
+    the brand-filtered count, not the raw page count."""
+    key = _norm((brand or "").split()[0])          # 'realisation' / 'house' / 'nadine'
+    return [x for x in listings if key and key in _norm(x.get("brand"))]
 
 
 def matches_style(title, style, threshold=88):

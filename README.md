@@ -14,16 +14,16 @@ Three dresses, three *different* patterns for TRACE. **TikTok demand is brand-an
 
 | Dress (brand) | TikTok (brand-anchored) | ShopMy (buy-intent) | Pickle (supply) | Pattern → what TRACE should do |
 |---|---|---|---|---|
-| **Nadine Merabi — Nina Gold** | **1.8M views · 24 creators** (top, all real) | on ShopMy ([product](https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular)) | **10 Nina rentals** ($60–119) | **High-value convergence** → the strongest play; onboard the creators |
-| **Réalisation Par — The Cora** | 245K views · 10 creators | **34.7K lifetime clicks · 991 promoters** *(recent ≈ 0)* | **76 of 800** | **Convergence** → match renters/owners now (proven demand, now cooling) |
-| **House of CB — The Sculpt** | **0 confirmed** — its 4.9M was 100% Pilates | — | 0 of 798 | **Signal contamination** → the homonym trap; real demand needs brand-anchored/LLM capture |
+| **Nadine Merabi — Nina Gold** | **1.8M views · 24 creators** *(brand/occasion-level)* | on ShopMy ([product](https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular)) | **10 Nina rentals** ($60–119) | **High-value convergence** → strongest play; onboard the creators |
+| **Réalisation Par — The Cora** | 245K views · 10 creators | **34.7K lifetime clicks · 991 promoters** *(recent ≈ 0)* | **70 of 724** | **Convergence** → match renters/owners now (proven demand, now cooling) |
+| **House of CB — The Sculpt** | **0 confirmed** — its 4.9M was 100% Pilates | — | 0 of 693 | **Signal contamination** → the homonym trap; real demand needs brand-anchored/LLM capture |
 
 ### The exact products (specific styles, not just brands)
 - **House of CB — "The Sculpt" bandage dress** (halter; mini + midi). The dress is real and viral (see the brand+style [TikTok search](https://www.tiktok.com/search?q=the%20sculpt%20bandage%20mini%20dress%20house%20of%20cb)), **but our hashtag capture (`#thesculpt`) was 100% Pilates** — 0 posts survive brand-anchoring — so we can't quantify its demand from this sample. That's the cautionary finding; the fix (now in the code) is to anchor capture on the brand, not the style word.
 - **Réalisation Par — "The Cora," _Mirage_ colorway** — silk bias-cut, multicolour-striped midi with a cowl neck + detachable half-slip (~$330–375). *(realisationpar.com/the-cora-mirage)*
 - **Nadine Merabi — the "Nina Gold" dress** — the signature gold sequin SKU of a British "wedding-guest" event label (~$300–600 retail); **10 copies rentable on Pickle (gold from $60)**, [product page](https://www.us.nadinemerabi.com/products/nina-gold-dress). *The radar discovered this brand on its own (see below) and I promoted it into the watchlist.*
 
-> Note: the Pickle supply counts (0 / 76 / 10) are **style-specific** — matched on the exact style name in listing titles across all 798 / 800 / 603 of each brand's dresses — so the supply signal is genuinely per-dress, not per-brand. They're **point-in-time and wobble a listing or two between scrapes** (the Cora read 78 one day, 76 the next) — that's the page-rotation sampling my `diff.py` guard exists to catch, not real churn.
+> Note: the Pickle supply counts (0 / 70 / 10) are **style-specific** — matched on the exact style name across each brand's **actual** listings (693 / 724 / 231). Pickle's brand pages mix in other labels (the Nadine Merabi page is only 38% Nadine Merabi), so I **brand-filter first** — see [density](#supply-density--where-it-actually-is-size--city). They **wobble a listing or two between scrapes** (the Cora read 76 one scrape, 70 the next) — the page-rotation sampling my `diff.py` guard exists to catch, not real churn.
 
 **The creators driving them (brand-anchored, verified):** Nadine Merabi — `@kathjay89` (108K), `@kathryn.mueller` (139K), `@omolabbake`. Cora — `@courtneyyyyy__`, `@amirajasminnn`, `@jaderselise` (55K). Sculpt — **none survive brand-anchoring** (every "sculpt" post was Pilates), which is itself the finding. These are exactly who TRACE would contact to seed supply & buy-intent.
 
@@ -53,12 +53,12 @@ Each dress evaluated across the factors the brief asks for:
 | **Creator activity (verified)** | @kathjay89 (108K), @kathryn.mueller (139K), @omolabbake | @courtneyyyyy__, @amirajasminnn, @jaderselise (55K) | **none survive brand-anchoring** (all Pilates) |
 | **Cross-platform breadth** | TikTok ✓ · Pickle ✓ · ShopMy (searchable) | **all three** (TikTok ✓ · ShopMy ✓ · Pickle ✓) | capture failed (homonym) · Pickle 0 |
 | **Commerce intent (ShopMy)** | on ShopMy (searchable); seed the 24 creators | **proven — ~34.7K _lifetime_ clicks, 991 promoters** (pinned by @sophcrump, @nadiaorr → [product](https://shopmy.us/shop/product/2128245)); **recent ≈ 0** — real but cooling | — |
-| **Rental liquidity** | **10 Nina Gold copies** ($60–119) | **76 of 800** ($50–90/wk) — deep | 0 of 798 |
+| **Rental liquidity** | **10 Nina Gold copies** ($60–119) | **70 of 724** ($50–90/wk) — deep | 0 of 693 |
 | **→ Pattern** | **High-value convergence** | **Convergence** | **Signal contamination** |
 
 **Product & evidence links** (all verified live):
 - **The Sculpt:** [product](https://www.houseofcb.com/the-sculpt-black-bandage-mini-dress.html) · [Pickle — brand deep, 0 Sculpt](https://www.shoponpickle.com/shop/rent/house-of-cb/dresses) · [TikTok brand+style search](https://www.tiktok.com/search?q=the%20sculpt%20bandage%20mini%20dress%20house%20of%20cb) *(#thesculpt is **100% Pilates** — 0 posts survive brand-anchoring; the dress is real but our hashtag pipeline couldn't isolate it)*
-- **Cora:** [product](https://realisationpar.com/the-cora-mirage/) · [Pickle rentals (76)](https://www.shoponpickle.com/shop/rent/realisation-par/dresses) · [TikTok](https://www.tiktok.com/tag/coradress) · [ShopMy product](https://shopmy.us/shop/product/2128245)
+- **Cora:** [product](https://realisationpar.com/the-cora-mirage/) · [Pickle rentals (70)](https://www.shoponpickle.com/shop/rent/realisation-par/dresses) · [TikTok](https://www.tiktok.com/tag/coradress) · [ShopMy product](https://shopmy.us/shop/product/2128245)
 - **Nadine Merabi — Nina Gold:** [product](https://www.us.nadinemerabi.com/products/nina-gold-dress) · [Pickle rental ($60)](https://www.shoponpickle.com/product/0c69581d-803f-11ef-96eb-71bced824269) · [TikTok](https://www.tiktok.com/search?q=nadine%20merabi%20dress%20nina%20gold) · [ShopMy](https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular) *(featured on ShopMy; click magnitude not in our 14-creator sample)*
 
 ## Creators to recruit (the other half of the ask)
@@ -68,7 +68,7 @@ The brief weights creators alongside dresses. These three are already *driving* 
 |---|---|---|---|---|
 | **[@kathjay89](https://www.tiktok.com/@kathjay89)** | Nadine Merabi | **108K** | [859K · Aug 2026](https://www.tiktok.com/@kathjay89/video/7670613372982840598) | Tags @Nadine Merabi directly; wedding-guest occasion where it rents at $60–119 → high-GMV. |
 | **[@kathryn.mueller](https://www.tiktok.com/@kathryn.mueller)** | Nadine Merabi | **139K** | [160K · Jun 2026](https://www.tiktok.com/@kathryn.mueller/video/7652755088863202591) | "Dress is @Nadine Merabi!" — biggest reach of the set; second seed for the top-demand dress. |
-| **[@courtneyyyyy__](https://www.tiktok.com/@courtneyyyyy__)** | Réalisation Par — Cora | 2.4K | [81K · Aug 2026](https://www.tiktok.com/@courtneyyyyy__/video/7675101137422372110) | Names "Realisation P@r Cora" directly; the Cora is already liquid (76 rentals) → match-now partner. |
+| **[@courtneyyyyy__](https://www.tiktok.com/@courtneyyyyy__)** | Réalisation Par — Cora | 2.4K | [81K · Aug 2026](https://www.tiktok.com/@courtneyyyyy__/video/7675101137422372110) | Names "Realisation P@r Cora" directly; the Cora is already liquid (70 rentals) → match-now partner. |
 
 Every creator above **explicitly names the brand** (that's the brand-anchoring filter — no bridal-gown or Pilates false matches). **Sculpt has none** — every "sculpt" creator was Pilates, which is the finding, not an omission.
 
@@ -83,14 +83,15 @@ The brief names **sizes** and locations as density dimensions. Every Pickle list
 | **House of CB** | 693 | **NYC 46%** · LA/CA 18% · TX 8% | S/XS = **71%** (S×292 · XS×203) |
 | **Nadine Merabi** | 231 | **NYC 42%** · LA/CA 16% · TX 7% | S/XS = **63%** (S×84 · XS×61) |
 
-**Two things TRACE can act on:** (1) supply is **NYC-first** across all three (42–69%) — so a presale/matching launch should start in NYC metro, where renter *and* owner liquidity already co-locate. (2) Supply skews hard to **S/XS (63–71%)** — so M+ renters are structurally underserved, a concrete gap to recruit owners against. (The Nina Gold's 10 copies mirror this: XS/S/S/S/M/L/6/6/8, four in NYC metro, rents $60–119.)
+**Two things TRACE can act on:** (1) supply is **NYC-first** across all three (42–69%) — so a presale/matching launch should start in NYC metro, where renter *and* owner liquidity already co-locate. (2) Supply skews hard to **S/XS (63–71%)** — so M+ renters are structurally underserved, a concrete gap to recruit owners against. (The Nina Gold's 10 copies mirror this: XS·XS·S·S·S·M·L·6·6·8, half in NYC metro, rents $60–119 — generated by `density.py`, not hand-counted.)
+
+**A second Pickle finding, free from this:** the brand pages are **contaminated** — the "Nadine Merabi" page is only **38% Nadine Merabi** (231 of 603; the rest are Retrofete, Arcina Ori, House of CB…), and even the cleaner pages are 87–90%. So the honest supply denominator is the **brand-filtered** count, not the page count — which is why `score.py`/`dashboard.py` now filter by brand first (`match.brand_filter`). Same class of data-quality catch as the rotating-subset discovery.
 
 ## Recommendation for TRACE
 1. **Lead with Nadine Merabi's Nina Gold — the top *real* demand.** 1.8M brand-anchored views, 24 creators, and 10 rentable copies ($60–119) → the strongest all-round play. Onboard the 24 discovered creators to light up ShopMy and match wedding-guest renters to owners now.
-2. **Capture the Cora (Réalisation Par) as proven-but-cooling liquidity.** 245K demand, 76 rentals, and the strongest lifetime buy-intent (**991 promoters, ~34.7K clicks**) all exist → match renters to owners today. Own the caveat: recent monthly clicks ≈ 0, so this is *activating an existing pool*, not chasing a live spike.
+2. **Capture the Cora (Réalisation Par) as proven-but-cooling liquidity.** 245K demand, 70 rentals, and the strongest lifetime buy-intent (**991 promoters, ~34.7K clicks**) all exist → match renters to owners today. Own the caveat: recent monthly clicks ≈ 0, so this is *activating an existing pool*, not chasing a live spike.
 3. **Treat "The Sculpt" as a cautionary tale, not a pick.** It topped an earlier scorecard at 4.9M — but brand-anchoring showed that was **100% Pilates**. The dress is genuinely viral (manual brand+style search confirms), but our hashtag pipeline couldn't isolate it, so I won't spend on it until brand-anchored/LLM capture can measure the real signal. The check that caught this is now in the pipeline.
 4. **The absence of a signal is informative** — a Pickle zero is a build opportunity; a "demand" number that's 100% homonym is a trap. Distinguishing the two is the whole job.
-4. **The absence of a Pickle listing is a buy signal, not a dead end** — Sculpt is where TRACE *creates* the market; Cora and Nadine Merabi are where it *monetizes* one that already exists.
 
 ---
 
@@ -159,11 +160,11 @@ Alerts are tiered, with a per-dress cooldown so nothing spams daily:
 ## The scorecard (real data)
 | Dress | Trend | Opportunity | TikTok views (the dress) | Saves | Creators | Pickle (style) |
 |---|--:|--:|--:|--:|--:|--:|
-| Nadine Merabi — Nina Gold | 95.2 | 33.3 | 1,756,181 | 5,003 | 24 | 603 (10) |
-| Réalisation Par Cora | 37.4 | 5.6 | 245,891 | 1,726 | 10 | 800 (76) |
-| House of CB Sculpt | 0.0 | 0.0 | 0 | 0 | 0 | 798 (0) |
+| Nadine Merabi — Nina Gold | 95.2 | 33.3 | 1,756,181 | 5,003 | 24 | 231 (10) |
+| Réalisation Par Cora | 37.4 | 5.6 | 245,891 | 1,726 | 10 | 724 (70) |
+| House of CB Sculpt | 0.0 | 0.0 | 0 | 0 | 0 | 693 (0) |
 
-*Trend = 0.5·views + 0.3·saves + 0.2·freshness (min-max normalized). Opportunity = Trend × supply-gap — so dresses that already have supply (Cora, Nadine Merabi) score low on **Opportunity** by design: they're **monetize-now**, not build-the-market. Sculpt's Trend is an upper bound (Pilates noise).*
+*Trend = 0.5·views + 0.3·saves + 0.2·freshness (min-max normalized). Opportunity = Trend × supply-gap — so dresses that already have supply (Cora, Nadine Merabi) score low on **Opportunity** by design: they're **monetize-now**, not build-the-market. **Sculpt scores 0 because its demand is _unmeasured_ (100% Pilates in our sample), not because there's no opportunity** — a real limitation of Opportunity = Trend × gap: it can't tell "no demand" from "demand we couldn't capture." A `measured/unmeasured` flag is the fix (see limitations).*
 
 > **Owning the scoring:** demand is **brand-anchored**, so the ranking reflects *real* dress mentions — Nadine Merabi (1.8M) > Cora (245K) > Sculpt (**0**, all Pilates). Freshness (~0.22) barely differentiates, so Trend is volume-led; with N=3 the weights matter far less than the brand-anchoring that makes the volume real in the first place. That's why the *recommendation* leans on the pattern (convergence vs. contamination), not the raw number — and why Sculpt's old 100 was a red flag, not a result.
 
@@ -177,7 +178,7 @@ Alerts are tiered, with a per-dress cooldown so nothing spams daily:
 - **TikTok keyword-search is down** (the actor's search sorting is "under maintenance"), so I scraped by **hashtags** and split each dress into *brand-tag* vs *this-dress* (caption actually names the style). Product-level isolation is clean for Cora; Sculpt's this-dress count still carries some Pilates noise; and Nadine Merabi's demand is measured at the brand level (the Nina Gold SKU is the supply anchor).
 - **Homonym pollution — the core signal-validity fix.** Style words are homonyms: "cora" is also a person / a black cat / prison slang; "sculpt" is a Pilates move. Crucially, **whole-word or fuzzy matching does *not* fix this** — Pilates captions contain the whole word "sculpt" — so I brand-anchor instead: a post counts only if it names the brand (`brand_terms` in the watchlist). That dropped Sculpt from a fake **4.9M → 0** (all Pilates) and Cora from 1.0M → a clean **245K**, and it's what surfaced that my own scorecard's #1 was noise. The dashboard's TikTok links similarly use brand+style searches, not the raw `#thesculpt` tag.
 - **Brand heat vs product demand:** an early third pick (an Aritzia style) had big brand-tag traffic but **0** posts about the specific dress, so I dropped it. The radar's own inverse search surfaced **Nadine Merabi** as the replacement, which I validated across all three platforms.
-- **Pickle's on-site search is fuzzy** — a "giggle" search returns *ski goggles*. So I measured supply from each brand's listing page with **exact style-name matching**, and used **scroll-until-stable** to beat the ~280-item scroll cap → "0 of 798 / 76 of 800 / 10 of 603" is catalog-wide, not a sample.
+- **Pickle's on-site search is fuzzy** — a "giggle" search returns *ski goggles*. So I measured supply from each brand's listing page with **exact style-name matching on the brand-filtered listings** (the pages mix in other labels — the Nadine Merabi page is only **38% Nadine Merabi**), plus **scroll-until-stable** to beat the ~280-item scroll cap → "0 of 693 / 70 of 724 / 10 of 231" is catalog-wide, not a sample.
 - **Momentum diff is guarded, not asserted.** Pickle's brand pages return a *rotating subset* — two same-depth scrapes share only ~33% of listings — so a naive UUID-diff over-reports turnover badly (I measured 53–67% "disappeared" with total counts *flat*, which can't be real rentals). `diff.py`'s comparability guard suppresses those and reports turnover only where snapshots overlap ≥70% (Nadine Merabi's 1-day pair passed → a genuine 10%). Trustworthy rental velocity needs a stable per-listing ID or the inventory feed, not the paginated page.
 - **ShopMy is creator-sampled** — I scraped 14 fashion creators' recent picks (via Apify), so coverage is directional, not exhaustive; `num_promoters` gives a catalog-wide breadth check per product (the Cora shows 991). Nadine Merabi's buy-intent needs the 24 discovered wedding creators seeded in.
 - **A double-count I caught in my own headline metric.** `total_clicks` on a ShopMy pick is a *per-product lifetime* figure, so when two creators pin the same product, summing over picks double-counts. I fixed it at the source — `summarize()` now dedupes per product — which dropped the Cora's clicks from an inflated **69.5K → the real 34.7K**, and re-derived both snapshots from the persisted picks (not a hand-edit). The **more telling** number is `monthly_clicks ≈ 0`: the Cora's lifetime buy-intent is real, but the click spike has passed — so I frame it as *activating existing liquidity*, not a live surge.
