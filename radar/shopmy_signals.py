@@ -24,6 +24,8 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 from apify_client import ApifyClient
 
+from .score import snapshot_date   # order snapshots by filename date, not mtime
+
 load_dotenv()
 HERE = os.path.dirname(__file__)
 WATCHLIST = os.path.join(HERE, "..", "config", "watchlist.json")
@@ -92,7 +94,7 @@ def main():
     cfg = json.load(open(WATCHLIST))
     dresses, creators = cfg["dresses"], cfg.get("shopmy_creators", [])
     if "--from-discover" in sys.argv:   # dynamic creators from the latest discover run — closes the loop
-        files = sorted(glob.glob(os.path.join(SNAP_DIR, "discover_*.json")), key=os.path.getmtime)
+        files = sorted(glob.glob(os.path.join(SNAP_DIR, "discover_*.json")), key=snapshot_date)
         if files:
             extra = json.load(open(files[-1])).get("discovered_creators", [])
             creators = list(dict.fromkeys(creators + extra))

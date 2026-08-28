@@ -14,7 +14,7 @@ from urllib.parse import quote
 
 from .match import matches_style, brand_filter
 from .velocity import compute as vel_compute, label as vel_label
-from .score import norm, gap_factor, trend   # single source of truth for scoring
+from .score import norm, gap_factor, trend, snapshot_date   # single source of truth for scoring + snapshot ordering
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -67,7 +67,7 @@ footer{padding:18px 32px;color:#6b7d96;font-size:12px;border-top:1px solid #1e26
 
 def latest(pat):
     fs = glob.glob(os.path.join(DATA, pat))
-    return max(fs, key=os.path.getmtime) if fs else None
+    return max(fs, key=snapshot_date) if fs else None   # filename date, not mtime (identical on a fresh clone)
 
 
 def load(pat):
