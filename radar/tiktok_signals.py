@@ -6,7 +6,9 @@ Pulls recent TikTok posts per dress via an Apify actor (clockworks/tiktok-scrape
 using HASHTAGS (keyword `searchQueries` is currently under maintenance / returns 0).
 For each dress we scrape its brand + product hashtags, then split results into:
   • brand heat   — everything under those hashtags (context)
-  • this dress   — posts whose caption actually mentions the product ("match" term)
+  • this dress   — posts that mention the BRAND (brand-anchored). Style words alone are
+                   homonym-ridden ("sculpt"=Pilates, "cora"=a person/cat), so requiring the
+                   brand is what isolates the dress. See brand_terms in the watchlist.
 Aggregates views, saves ("in the bag"), creators, and recency (momentum proxy).
 
 Setup:
@@ -147,10 +149,15 @@ def main():
             if p["id"] and p["id"] not in seen:
                 seen.add(p["id"])
                 posts.append(p)
-        # "this dress" = posts whose caption or hashtags mention the product term
-        mention = [p for p in posts
-                   if term and (term in p["text"].lower()
-                                or any(term in (h or "").lower() for h in p["hashtags"]))]
+        # "this dress" = posts that mention the BRAND (brand-anchored). Style words alone are
+        # homonym-ridden — "sculpt" is Pilates, "cora" is a person/a cat/prison slang — so a bare
+        # `term in text` count is contaminated. Requiring the brand is what actually isolates the
+        # dress (verified: it drops Sculpt's #thesculpt Pilates posts from 20 to 0).
+        brand_terms = [t.lower() for t in d.get("brand_terms", [])] or [term]
+        def _brand_hit(p):
+            blob = ((p.get("text") or "") + " " + " ".join(p.get("hashtags") or [])).lower()
+            return any(bt in blob for bt in brand_terms)
+        mention = [p for p in posts if _brand_hit(p)]
         results[d["id"]] = {
             "name": d["name"], "brand": d["brand"],
             "brand_heat": aggregate(posts),           # context: all posts under the tags

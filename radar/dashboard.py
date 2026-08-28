@@ -20,9 +20,9 @@ WATCHLIST = os.path.join(HERE, "..", "config", "watchlist.json")
 OUT = os.path.join(HERE, "..", "dashboard.html")
 
 PATTERN = {
-    "cora":   ("Convergence", "#16a34a", "Demand + supply already converge → match renters/buyers to owners now."),
-    "merabi": ("High-value liquidity", "#0ea5e9", "The Nina Gold — a signature sequin look; 10 rentable on Pickle (gold from $60), famous on TikTok. High-value supply + demand; ShopMy buy-intent not yet lit (seed the creators)."),
-    "sculpt": ("Scarcity gap", "#dc2626", "Viral + limited-edition, no rental supply → build the market from scratch."),
+    "cora":   ("Convergence", "#16a34a", "Real brand-anchored demand (245K) + 76 rentals + proven (now-cooling) ShopMy → match renters to owners today."),
+    "merabi": ("High-value convergence", "#0ea5e9", "Top real demand (1.8M, 24 creators) + 10 Nina rentals (gold from $60) → the strongest all-round play; onboard the creators to light up ShopMy."),
+    "sculpt": ("Signal contamination", "#dc2626", "Looked #1 at 4.9M — but brand-anchoring exposed it as 100% Pilates (homonym). 0 confirmed dress posts in our sample; the real dress needs brand-anchored / LLM capture."),
 }
 
 # TikTok links per dress, each a list of (label, url). Use a clean dress TAG where one
