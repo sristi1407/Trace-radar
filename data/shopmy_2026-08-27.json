@@ -5,6 +5,7 @@
       "name": "R\u00e9alisation Par The Cora (Mirage)",
       "style": {
         "n_picks": 2,
+        "n_products": 1,
         "n_creators": 2,
         "total_clicks": 34770,
         "monthly_clicks": 0,
@@ -14,10 +15,11 @@
       "brand": {
         "n_picks": 4,
         "n_creators": 2,
-        "total_clicks": 72094,
-        "monthly_clicks": 7,
+        "total_clicks": null,
+        "monthly_clicks": null,
         "max_promoters": 991,
-        "example": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+        "example": "https://realisationpar.com/coming-soon-br-the-cora-mirage",
+        "note": "not re-derivable \u2014 brand_picks not captured in this snapshot (persisted going forward)"
       },
       "style_picks": [
         {
@@ -50,17 +52,20 @@
       "name": "Nadine Merabi \u2014 wedding-guest occasionwear",
       "style": {
         "n_picks": 0,
+        "n_products": 0,
         "n_creators": 0,
         "total_clicks": 0,
         "monthly_clicks": 0,
-        "max_promoters": 0
+        "max_promoters": 0,
+        "example": null
       },
       "brand": {
         "n_picks": 0,
         "n_creators": 0,
-        "total_clicks": 0,
-        "monthly_clicks": 0,
-        "max_promoters": 0
+        "total_clicks": null,
+        "monthly_clicks": null,
+        "max_promoters": 0,
+        "note": "not re-derivable \u2014 brand_picks not captured in this snapshot (persisted going forward)"
       },
       "style_picks": []
     },
@@ -68,17 +73,20 @@
       "name": "House of CB The Sculpt (bandage)",
       "style": {
         "n_picks": 0,
+        "n_products": 0,
         "n_creators": 0,
         "total_clicks": 0,
         "monthly_clicks": 0,
-        "max_promoters": 0
+        "max_promoters": 0,
+        "example": null
       },
       "brand": {
         "n_picks": 0,
         "n_creators": 0,
-        "total_clicks": 0,
-        "monthly_clicks": 0,
-        "max_promoters": 0
+        "total_clicks": null,
+        "monthly_clicks": null,
+        "max_promoters": 0,
+        "note": "not re-derivable \u2014 brand_picks not captured in this snapshot (persisted going forward)"
       },
       "style_picks": []
     }

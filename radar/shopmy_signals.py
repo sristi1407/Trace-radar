@@ -67,13 +67,20 @@ def normalize(p):
 
 def summarize(picks):
     if not picks:
-        return {"n_picks": 0, "n_creators": 0, "total_clicks": 0,
-                "monthly_clicks": 0, "max_promoters": 0}
+        return {"n_picks": 0, "n_products": 0, "n_creators": 0, "total_clicks": 0,
+                "monthly_clicks": 0, "max_promoters": 0, "example": None}
+    # A pick's clicks are a per-PRODUCT lifetime figure, NOT per-creator — so when two
+    # creators pin the same product, summing over picks double-counts. Dedupe by product first.
+    uniq = {}
+    for p in picks:
+        uniq[p.get("url") or p["title"].lower()] = p
+    prods = list(uniq.values())
     return {
         "n_picks": len(picks),
+        "n_products": len(prods),
         "n_creators": len({p["creator"] for p in picks if p["creator"]}),
-        "total_clicks": sum(p["total_clicks"] for p in picks),
-        "monthly_clicks": sum(p["monthly_clicks"] for p in picks),
+        "total_clicks": sum(p["total_clicks"] for p in prods),
+        "monthly_clicks": sum(p["monthly_clicks"] for p in prods),
         "max_promoters": max(p["promoters"] for p in picks),      # widest catalog breadth
         "example": next((p["url"] for p in picks if p["url"]), None),
     }
@@ -110,7 +117,7 @@ def main():
         style = [p for p in picks if term and term in p["title"].lower()]
         brand = [p for p in picks if any(m in p["merchant"] or m in p["brand"].lower() for m in merchants)]
         results[d["id"]] = {"name": d["name"], "style": summarize(style), "brand": summarize(brand),
-                            "style_picks": style}
+                            "style_picks": style, "brand_picks": brand}   # persist both so summaries are re-derivable
         s, b = results[d["id"]]["style"], results[d["id"]]["brand"]
         print(f"  {d['name']}: exact-style {s['n_picks']} picks / {s['total_clicks']:,} clicks "
               f"(max {s['max_promoters']} promoters) | brand {b['n_picks']} picks / {b['total_clicks']:,} clicks")

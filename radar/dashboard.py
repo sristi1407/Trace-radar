@@ -119,7 +119,7 @@ def main():
             "brand_views": bh.get("total_views", 0),
             "sm_clicks": (smv.get("style", {}) or {}).get("total_clicks", 0),
             "sm_prom": (smv.get("style", {}) or {}).get("max_promoters", 0),
-            "sm_brand": (smv.get("brand", {}) or {}).get("total_clicks", 0),
+            "sm_monthly": (smv.get("style", {}) or {}).get("monthly_clicks", 0),
             "total": total, "style": style,
         })
 
@@ -155,11 +155,10 @@ def main():
         tiktok_cell = (f"{fmt(r['views'])} views · {fmt(r['saves'])} saves · {r['tt_creators']} creators"
                        f"<br><span class='muted'>brand tag {fmt(r['brand_views'])} views · {int(r['fresh']*100)}% posted &lt;14d</span>")
         if r['sm_clicks'] or r['sm_prom']:
-            shopmy_cell = (f"{fmt(r['sm_clicks'])} clicks · {r['sm_prom']} creators link it"
-                           f"<br><span class='muted'>brand-level {fmt(r['sm_brand'])} clicks</span>")
-        elif r['sm_brand']:
-            shopmy_cell = f"brand-level {fmt(r['sm_brand'])} clicks · <span class='muted'>creators feature it (see link)</span>"
-        else:   # our 14-creator sample missed it; the ShopMy search link lets you check directly
+            # clicks are lifetime; flag when recent monthly activity is ~0 (don't oversell "hot now")
+            recent = "" if r['sm_monthly'] else " <span class='muted'>(lifetime; recent monthly ≈ 0)</span>"
+            shopmy_cell = f"{fmt(r['sm_clicks'])} clicks · {r['sm_prom']} creators link it{recent}"
+        else:   # our 14-creator sample missed it; the ShopMy link lets you check directly
             shopmy_cell = f"<span class='muted'>on ShopMy (see link) · click volume not captured in our 14-creator sample</span>"
         cards += f"""
     <div class="card">
