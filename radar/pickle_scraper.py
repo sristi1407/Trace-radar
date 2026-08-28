@@ -24,7 +24,7 @@ from playwright.sync_api import sync_playwright
 BASE = "https://www.shoponpickle.com"
 CATEGORY_URL = BASE + "/shop/rent/{category}"
 SNAP_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
-SCROLL_ROUNDS, SCROLL_PAUSE = 6, 1.2   # scroll to lazy-load past the first ~40
+SCROLL_PAUSE = 1.2   # pause between scrolls to let listings lazy-load
 
 PRICE_RETAIL = re.compile(r"Orig\.?\s*Retail\s*\$([\d,]+)")
 PRICE_RENT   = re.compile(r"Rent\s*\$([\d,]+)")

@@ -22,13 +22,11 @@ Run:
 NOTE: caption-based product extraction is heuristic — an LLM (Claude/GPT) or a
 fine-tuned NER would resolve the exact SKU far better. This PoC shows the shape.
 """
-import json, os, re, sys, statistics
+import json, os, re, sys
 from datetime import datetime, timezone
 
 from dotenv import load_dotenv
 from apify_client import ApifyClient
-
-from .match import matches_style
 
 load_dotenv()
 HERE = os.path.dirname(__file__)

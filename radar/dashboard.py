@@ -23,7 +23,7 @@ OUT = os.path.join(HERE, "..", "dashboard.html")
 
 PATTERN = {
     "cora":   ("Convergence", "#16a34a", "Real brand-anchored demand (245K) + 76 rentals + proven (now-cooling) ShopMy → match renters to owners today."),
-    "merabi": ("High-value convergence", "#0ea5e9", "Top demand — but brand/occasion-level (1.8M; people search 'a Nadine Merabi for a wedding', not 'Nina'), anchored to the Nina Gold SKU (10 rentals). The strongest all-round play; onboard the creators to light up ShopMy."),
+    "merabi": ("High-value convergence", "#0ea5e9", "Top demand — but brand/occasion-level (1.8M; people search 'a Nadine Merabi for a wedding', not 'Nina'), anchored to the Nina Gold SKU (6 gold rentals). The strongest all-round play; onboard the creators to light up ShopMy."),
     "sculpt": ("Signal contamination", "#dc2626", "Looked #1 at 4.9M — but brand-anchoring exposed it as 100% Pilates (homonym). 0 confirmed dress posts in our sample; the real dress needs brand-anchored / LLM capture."),
 }
 

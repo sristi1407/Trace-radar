@@ -14,10 +14,16 @@ Outputs two deterministic, explainable rankings:
 Run:
     python -m radar.score
 """
-import json, os, glob
+import json, os, glob, re
 from datetime import datetime, timezone
 
 from .match import matches_style, brand_filter
+
+
+def _date(path):
+    # order snapshots by the date in the FILENAME, not mtime (identical after a fresh git clone)
+    m = re.search(r"(\d{4}-\d{2}-\d{2})", os.path.basename(path))
+    return m.group(1) if m else "0000-00-00"
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -26,7 +32,7 @@ WATCHLIST = os.path.join(HERE, "..", "config", "watchlist.json")
 
 def latest(pattern):
     files = glob.glob(os.path.join(DATA, pattern))
-    return max(files, key=os.path.getmtime) if files else None
+    return max(files, key=_date) if files else None
 
 
 def load_json(path):

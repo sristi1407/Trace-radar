@@ -30,7 +30,11 @@ def brand_filter(listings, brand):
     """Keep only listings that are actually this brand — Pickle's brand pages are contaminated
     (the Nadine Merabi page is only ~38% Nadine Merabi), so the honest supply denominator is
     the brand-filtered count, not the raw page count."""
-    key = _norm((brand or "").split()[0])          # 'realisation' / 'house' / 'nadine'
+    # Key on the first word — lenient on purpose: the parsed brand field has variants ("Realisation"
+    # vs "Réalisation Par", "White Nadine Merabi"), and first-word catches them (verified accurate:
+    # 231 vs 237 by title). Caveat: "House of CB" keys on "house" and would collide with a "House of
+    # Harlow" listing if one landed on the page (none do today). Production would key on a brand-id / title.
+    key = _norm((brand or "").split()[0])
     return [x for x in listings if key and key in _norm(x.get("brand"))]
 
 

@@ -20,10 +20,17 @@ guard below catches both and suppresses turnover instead of firing false alerts.
 rental velocity needs a stable per-listing ID or the full inventory feed (an integration),
 not the paginated brand page — so momentum here leans on the TikTok signals, not Pickle churn.
 """
-import glob, json, os
+import glob, json, os, re
 from datetime import datetime, timezone
 
 from .match import matches_style
+
+
+def _date(path):
+    # order snapshots by the date in the FILENAME, not mtime (identical after a fresh git clone —
+    # mtime ordering silently reverses the diff window on a clone)
+    m = re.search(r"(\d{4}-\d{2}-\d{2})", os.path.basename(path))
+    return m.group(1) if m else "0000-00-00"
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data")
@@ -35,7 +42,7 @@ STYLE_DROP_ALERT = 3    # only flag a style whose supply drops by >=3 (ignore no
 
 def two_latest(category):
     cat = category.replace("/", "_")
-    files = sorted(glob.glob(os.path.join(DATA, f"pickle_{cat}_*.json")), key=os.path.getmtime)
+    files = sorted(glob.glob(os.path.join(DATA, f"pickle_{cat}_*.json")), key=_date)
     return files[-2:] if len(files) >= 2 else files
 
 
