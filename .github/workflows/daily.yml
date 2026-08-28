@@ -37,6 +37,7 @@ jobs:
           python -m radar.score
           python -m radar.diff            || true
           python -m radar.velocity        || true   # per-post momentum
+          python -m radar.density         || true   # size & city breakdown
           python -m radar.dashboard
 
       - name: Commit refreshed data + dashboard

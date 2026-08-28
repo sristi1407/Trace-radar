@@ -28,6 +28,7 @@ STAGES = [
     ["radar.score"],
     ["radar.diff"],
     ["radar.velocity"],     # per-post momentum (Δviews on the same posts across snapshots)
+    ["radar.density"],       # size & city breakdown of supply
     ["radar.dashboard"],    # regenerate the UI so it never drifts from the data
 ]
 

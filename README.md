@@ -74,6 +74,17 @@ Every creator above **explicitly names the brand** (that's the brand-anchoring f
 
 **How I'd action them:** ask each to link the product on **ShopMy** (so buy-intent becomes measurable, not just inferred). This list isn't hand-curated — `discover.py` regenerates it daily from whoever's actually driving engagement, so it stays current.
 
+## Supply density — where it actually is (size & city)
+The brief names **sizes** and locations as density dimensions. Every Pickle listing carries both at ~100% fill, so this is free (`radar/density.py`):
+
+| Brand | Listings | Top cities | Size skew |
+|---|--:|---|---|
+| **Réalisation Par** | 724 | **NYC 69%** · LA/CA 15% · FL 3% | S/XS = **66%** (S×281 · XS×201) |
+| **House of CB** | 693 | **NYC 46%** · LA/CA 18% · TX 8% | S/XS = **71%** (S×292 · XS×203) |
+| **Nadine Merabi** | 231 | **NYC 42%** · LA/CA 16% · TX 7% | S/XS = **63%** (S×84 · XS×61) |
+
+**Two things TRACE can act on:** (1) supply is **NYC-first** across all three (42–69%) — so a presale/matching launch should start in NYC metro, where renter *and* owner liquidity already co-locate. (2) Supply skews hard to **S/XS (63–71%)** — so M+ renters are structurally underserved, a concrete gap to recruit owners against. (The Nina Gold's 10 copies mirror this: XS/S/S/S/M/L/6/6/8, four in NYC metro, rents $60–119.)
+
 ## Recommendation for TRACE
 1. **Lead with Nadine Merabi's Nina Gold — the top *real* demand.** 1.8M brand-anchored views, 24 creators, and 10 rentable copies ($60–119) → the strongest all-round play. Onboard the 24 discovered creators to light up ShopMy and match wedding-guest renters to owners now.
 2. **Capture the Cora (Réalisation Par) as proven-but-cooling liquidity.** 245K demand, 76 rentals, and the strongest lifetime buy-intent (**991 promoters, ~34.7K clicks**) all exist → match renters to owners today. Own the caveat: recent monthly clicks ≈ 0, so this is *activating an existing pool*, not chasing a live spike.
@@ -188,7 +199,9 @@ python -m radar.pickle_scraper house-of-cb/dresses realisation-par/dresses nadin
 python -m radar.tiktok_signals
 python -m radar.shopmy_signals   # -> data/shopmy_<date>.json  (buy-intent)
 python -m radar.score         # -> data/radar_<date>.md
-python -m radar.diff          # -> data/diff_<date>.md  (run daily for momentum)
+python -m radar.diff          # -> data/diff_<date>.md   (Pickle supply turnover, overlap-guarded)
+python -m radar.velocity      # -> data/velocity_<date>.md (per-post demand momentum)
+python -m radar.density       # -> data/density_<date>.md  (size & city breakdown)
 
 # — or run the entire pipeline in one command (logs to data/logs/):
 python -m radar.run_daily            # add --loop to repeat every 24h
