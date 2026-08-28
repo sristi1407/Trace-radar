@@ -62,6 +62,17 @@ Each dress evaluated across the factors the brief asks for:
 - **Cora:** [product](https://realisationpar.com/the-cora-mirage/) · [Pickle rentals (78)](https://www.shoponpickle.com/shop/rent/realisation-par/dresses) · [TikTok](https://www.tiktok.com/tag/coradress)
 - **Nadine Merabi — Nina Gold:** [product](https://www.us.nadinemerabi.com/products/nina-gold-dress) · [Pickle rental ($60)](https://www.shoponpickle.com/product/0c69581d-803f-11ef-96eb-71bced824269) · [TikTok](https://www.tiktok.com/search?q=nadine%20merabi%20dress%20nina%20gold) · [ShopMy](https://shopmy.us/shop?query=nadine+merabi+dress+nina+gold&tab=popular) *(featured on ShopMy; click magnitude not in our 14-creator sample)*
 
+## Creators to recruit (the other half of the ask)
+The brief weights creators alongside dresses. These three are already *driving* the tracked dresses — pulled straight from the scraped TikTok data (reach = follower count where the scrape captured it; post = their top video on that dress, linked):
+
+| Creator | Dress | Reach | Top post (views · date) | Why recruit |
+|---|---|---|---|---|
+| **[@ruedeseinebridal](https://www.tiktok.com/@ruedeseinebridal)** | Réalisation Par — Cora | **377K** | [641K · Feb 2026](https://www.tiktok.com/@ruedeseinebridal/video/7601963563963419911) | Bridal creator, big reach; the Cora is already liquid on Pickle (78 listings) → a *match-now* partner. |
+| **[@kathjay89](https://www.tiktok.com/@kathjay89)** | Nadine Merabi — Nina Gold | **108K** | [859K · Aug 2026](https://www.tiktok.com/@kathjay89/video/7670613372982840598) | Wedding-guest creator in exactly the occasion where Nadine Merabi rents at $60–200 → high-GMV. |
+| **[@abiimarchesini](https://www.tiktok.com/@abiimarchesini)** | House of CB — Sculpt | *n/a in scrape* | [1.0M · Aug 2026](https://www.tiktok.com/@abiimarchesini/video/7674382933075021063) | Top-viewed Sculpt post; Sculpt has **zero** rental supply → recruit to seed the presale wedge. |
+
+**How I'd action them:** ask each to link the product on **ShopMy** (so buy-intent becomes measurable, not just inferred), and for the zero-supply dress (Sculpt) ask them to anchor a presale/waitlist. This list isn't hand-curated — `discover.py` regenerates it daily from whoever's actually driving engagement, so it stays current instead of going stale.
+
 ## Recommendation for TRACE
 1. **Build the wedge around The Sculpt (House of CB).** It has the loudest demand (~4.9M dress-level views) and **zero** rental supply of the trending style — exactly TRACE's presale play: *organize demand and recruit owners before conventional supply exists.* **⚠️ Validate first:** the `#thesculpt` tag is contaminated by Pilates content, so I'd treat its #1 scorecard rank as an **upper bound** and confirm the true dress-share with an LLM relevance pass (below) before committing spend.
 2. **Capture immediate liquidity with the Cora (Réalisation Par).** Demand *and* 78 rental listings *and* the strongest measured buy-intent (**991 creators link it, 69.5K clicks**) already exist — so TRACE can match renters/buyers to owners **today**. This is the safest, proof-of-category play.
@@ -87,7 +98,7 @@ Running this daily surfaced failure modes I'd engineer around next — all drawn
 - **Keyword-search outages → fallback chaining.** TikTok's keyword search was down during this build, so I fell back to hashtags. In production I'd chain further: the brand's **official account feed** + the feeds of the **top ~50 ShopMy creators**. A **co-occurrence trigger** — the brand posts a style *and* ≥3 creators post the same style within 48h — is a stronger, more reliable signal than raw hashtag volume anyway.
 - **Dynamic creator discovery (loop now wired).** Trends come from *new* creators, not a fixed list. `discover.py` emits the high-engagement creators it finds, and `shopmy_signals.py --from-discover` scrapes them automatically — a self-expanding feedback loop: **TikTok finds the creator → ShopMy reads their links → Pickle checks the products.** This loop is exactly how Nadine Merabi went from *discovered* → *tracked* (below). (Handle resolution is best-effort — TikTok and ShopMy usernames don't always match — which the fuller version would reconcile via ShopMy's search API.)
 - **Catalog-wide validation, not just a sample.** Pull breadth metrics (e.g. the Cora's 991 promoters) from ShopMy's product search / sitemap rather than the 14-creator sample, and take a **weekly per-brand catalog baseline** (House of CB, Réalisation Par, Nadine Merabi, Retrofete) so buy-intent is measured against *all* linked products.
-- **Orchestration + state (make it a real daily job).** Wrap the pipeline in a Prefect/Dagster DAG (scrape → resolve → score → diff → alert) with **atomic, dated snapshots + a `_SUCCESS` marker**. `diff.py` then compares only *complete* runs — so a half-failed scrape can't produce a false zero-delta (exactly the apples-to-oranges failure I hit diffing a capped snapshot against a full one).
+- **Orchestration + state (now scheduled, not just described).** A **GitHub Action** ([`.github/workflows/daily.yml`](.github/workflows/daily.yml)) runs the whole pipeline every morning, commits the **atomic dated snapshots** (which accumulate the rolling 30-day baseline the percentile scoring needs), and **regenerates `dashboard.html` in CI** — so "recurring" is verifiable to a reviewer, and the README/scorecard/dashboard can't drift apart again. At larger scale this graduates to a Prefect/Dagster DAG with a `_SUCCESS` marker so `diff.py` compares only *complete* runs (guarding the apples-to-oranges failure I hit diffing a capped snapshot against a full one).
 
 ### Open questions I'd pressure-test next
 - **ShopMy resolution is best-effort.** TikTok and ShopMy handles don't always match. Refinements: a manual **handle-mapping table** for high-value creators, plus a **product-name search fallback** — if a creator can't be resolved, search ShopMy for the dress name directly (which I already do for the watchlist). *(This is the open gap on Nadine Merabi: strong TikTok + Pickle, ShopMy buy-intent still to be seeded from the discovered creators.)*
@@ -121,11 +132,13 @@ Together they demonstrate a credible path to a system that **refreshes daily, de
 ### Alert policy
 Alerts are tiered, with a per-dress cooldown so nothing spams daily:
 
-| Level | Trigger | Action |
+| Level | Trigger (on **raw** signals, not the normalized score) | Action |
 |---|---|---|
-| 🟢 **Discovery** | `discover.py` finds a *new* product with > 1M views | Log + daily digest |
-| 🟡 **Momentum** | Trend score jumps > 20% in 24h (or a style's Pickle supply drops ≥ 3) | Telegram `#trending` |
-| 🔴 **Gap** | Trend > 70 **and** Pickle supply = 0 (hot demand, no rental supply) | Telegram + email + draft a TRACE campaign |
+| 🟢 **Discovery** | `discover.py` finds a *new* product with **> 1M views** | Log + daily digest |
+| 🟡 **Momentum** | a tracked dress's **raw views or saves rise > 30% day-over-day** (from the dated snapshots), or its Pickle supply drops ≥ 3 | Telegram `#trending` |
+| 🔴 **Gap** | **> 2M raw views** (trailing) **and** Pickle style-supply = 0 | Telegram + email + draft a TRACE campaign |
+
+> **Why raw, not the Trend score:** the Trend score is min-max *normalized within each run*, so the top dress is always ~100 and the bottom ~0 — a threshold like "Trend > 70" would fire on whatever's #1 that day, and day-over-day deltas would be dominated by set composition, not real movement. So alerts key off **absolute raw signals** (views, saves, listing counts) from the dated snapshots; the normalized score is only for *within-run ranking*. (Once `run_daily`/the Action accumulate a 30-day baseline, these become percentile triggers.)
 
 **Cooldown:** a dress won't re-alert at the same level for 7 days — it only re-fires if it **escalates** a level (🟡 → 🔴) or re-accelerates after cooling. Keeps the signal high and the channel quiet. *(`diff.py` implements the threshold logic; this tiering + cooldown is the policy layer on top.)*
 
@@ -153,7 +166,8 @@ Alerts are tiered, with a per-dress cooldown so nothing spams daily:
 - **ShopMy is creator-sampled** — I scraped 14 fashion creators' recent picks (via Apify), so coverage is directional, not exhaustive; `num_promoters` gives a catalog-wide breadth check per product (the Cora shows 991). Nadine Merabi's buy-intent needs the 24 discovered wedding creators seeded in.
 - **Inverse-search extraction is heuristic** (brand list + regex) — it catches *named* brands but misses captions that don't name one; an LLM/NER pass would resolve exact SKUs far better (the code leaves that hook).
 - **Style matching is word-aware + fuzzy** (`match.py`); switching from naive substring left the supply counts unchanged, confirming the gaps aren't a matching artifact.
-- **Scoring** uses min-max over only 3 items, which squashes the middle. It stabilizes as `discover.py` surfaces more dresses — and the production version would use **percentile ranks against a rolling 30-day baseline** (accumulated by `run_daily.py`'s dated snapshots), removing the small-N compression artifact entirely.
+- **Scoring** uses min-max over only 3 items, which squashes the middle. It stabilizes as `discover.py` surfaces more dresses — and the production version would use **percentile ranks against a rolling 30-day baseline** (accumulated by the daily Action's dated snapshots), removing the small-N compression artifact entirely.
+- **Data sourcing & ToS (flagging for a build/buy call).** Every signal except Google Trends is scraper-based — TikTok & ShopMy via Apify actors, Pickle via headless Playwright — which runs against the letter of those platforms' terms. For a rate-limited PoC that's a deliberate tradeoff; for production I'd move to **official rails** (TikTok's API / partner program, ShopMy's API, a direct Pickle integration) before shipping. Not a blocker for a prototype, but a real cost to price in.
 
 ## What the radar surfaces next
 Pickle's most-listed rental brands (proven demand) include **Retrofete, De La Vali, House of CB** — and inverse search is already pointing at **Revolve, Norma Kamali, Cult Gaia** — a natural place to find the *next* convergence dress if one is also rising on TikTok.
@@ -170,8 +184,9 @@ python -m radar.shopmy_signals   # -> data/shopmy_<date>.json  (buy-intent)
 python -m radar.score         # -> data/radar_<date>.md
 python -m radar.diff          # -> data/diff_<date>.md  (run daily for momentum)
 
-# — or run the entire pipeline in one command (logs to data/logs/, cron-friendly):
+# — or run the entire pipeline in one command (logs to data/logs/):
 python -m radar.run_daily            # add --loop to repeat every 24h
+# (In CI this runs daily via .github/workflows/daily.yml — add APIFY_TOKEN as a repo secret.)
 
 python -m radar.dashboard            # -> dashboard.html (visual UI; open in a browser)
 ```

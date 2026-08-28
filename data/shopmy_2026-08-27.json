@@ -4,21 +4,47 @@
     "cora": {
       "name": "R\u00e9alisation Par The Cora (Mirage)",
       "style": {
-        "n_picks": 0,
-        "n_creators": 0,
-        "total_clicks": 0,
+        "n_picks": 2,
+        "n_creators": 2,
+        "total_clicks": 69540,
         "monthly_clicks": 0,
-        "max_promoters": 0
+        "max_promoters": 991,
+        "example": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
       },
       "brand": {
-        "n_picks": 1,
-        "n_creators": 1,
-        "total_clicks": 2019,
+        "n_picks": 4,
+        "n_creators": 2,
+        "total_clicks": 72094,
         "monthly_clicks": 7,
-        "max_promoters": 182,
-        "example": "https://realisationpar.com/coming-soon-br-the-meg-ethereal"
+        "max_promoters": 991,
+        "example": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
       },
-      "style_picks": []
+      "style_picks": [
+        {
+          "creator": "sophcrump",
+          "brand": "Re\u0301alisation Par",
+          "merchant": "realisationpar",
+          "title": "The Cora Dress",
+          "price": 360,
+          "total_clicks": 34770,
+          "weekly_clicks": 0,
+          "monthly_clicks": 0,
+          "promoters": 991,
+          "url": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+        },
+        {
+          "creator": "nadiaorr",
+          "brand": "Re\u0301alisation Par",
+          "merchant": "realisationpar",
+          "title": "The Cora Dress",
+          "price": 360,
+          "total_clicks": 34770,
+          "weekly_clicks": 0,
+          "monthly_clicks": 0,
+          "promoters": 991,
+          "url": "https://realisationpar.com/coming-soon-br-the-cora-mirage"
+        }
+      ]
     },
     "merabi": {
       "name": "Nadine Merabi \u2014 wedding-guest occasionwear",

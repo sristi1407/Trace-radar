@@ -6,3 +6,5 @@ __pycache__/
 # keep data snapshots as evidence; ignore only raw dumps + run logs:
 data/*_raw.json
 data/logs/
+# internal scaffolding — never publish
+BUILD_PLAN.md

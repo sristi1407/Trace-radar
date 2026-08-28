@@ -18,7 +18,7 @@ table.feed{width:100%;border-collapse:collapse;font-size:13px}table.feed th{text
 footer{padding:18px 32px;color:#6b7d96;font-size:12px;border-top:1px solid #1e2634}
 </style></head><body>
 <header><h1>TRACE — Demand &amp; Liquidity Radar</h1>
-<p>TikTok × ShopMy × Pickle · ranked by opportunity (demand where rental supply is missing) · 2026-08-27</p></header>
+<p>TikTok × ShopMy × Pickle · ranked by opportunity (demand where rental supply is missing) · 2026-08-28</p></header>
 <section><h2>Trending dresses <span class="muted" style="font-weight:400;font-size:12px">— Trend &amp; Opportunity are 0–100, normalized within these 3 dresses (100 = top of the set)</span></h2><div class="cards">
     <div class="card">
       <span class="pat" style="background:#dc2626">Scarcity gap</span>
@@ -44,7 +44,7 @@ footer{padding:18px 32px;color:#6b7d96;font-size:12px;border-top:1px solid #1e26
       </div>
       <table class="sig">
         <tr><td>📈 TikTok</td><td>1.0M views · 15K saves · 29 creators<br><span class='muted'>brand tag 11.3M views · 25% posted &lt;14d</span></td></tr>
-        <tr><td>🛍️ ShopMy</td><td>brand-level 2K clicks · <span class='muted'>creators feature it (see link)</span></td></tr>
+        <tr><td>🛍️ ShopMy</td><td>70K clicks · 991 creators link it<br><span class='muted'>brand-level 72K clicks</span></td></tr>
         <tr><td>👗 Pickle</td><td>78 <span class='muted'>of 800</span> rental listings of the style</td></tr>
       </table>
       <p class="desc">Demand + supply already converge → match renters/buyers to owners now.</p>
@@ -68,8 +68,9 @@ footer{padding:18px 32px;color:#6b7d96;font-size:12px;border-top:1px solid #1e26
 <section><h2>🔎 Discovery feed <span class="muted">— inverse search: dresses the radar found on its own</span></h2>
 <table class="feed"><tr><th>Brand</th><th>Views</th><th>Posts</th><th>Top product</th><th></th></tr><tr><td><b>Nadine Merabi</b></td><td>9.2M</td><td>1</td><td class='muted'>nyc Jumpsuit</td><td><span class='muted'>tracked</span></td></tr><tr><td><b>Revolve</b></td><td>7.4M</td><td>3</td><td class='muted'>—</td><td><span class='new'>NEW</span></td></tr><tr><td><b>Free People</b></td><td>3.9M</td><td>1</td><td class='muted'>—</td><td><span class='new'>NEW</span></td></tr><tr><td><b>Norma Kamali</b></td><td>2.6M</td><td>1</td><td class='muted'>—</td><td><span class='new'>NEW</span></td></tr><tr><td><b>Cult Gaia</b></td><td>1.1M</td><td>1</td><td class='muted'>—</td><td><span class='new'>NEW</span></td></tr><tr><td><b>House of CB</b></td><td>898K</td><td>1</td><td class='muted'>these house of cb dress</td><td><span class='muted'>tracked</span></td></tr><tr><td><b>Meshki</b></td><td>58K</td><td>2</td><td class='muted'>—</td><td><span class='new'>NEW</span></td></tr><tr><td><b>Reformation</b></td><td>43K</td><td>1</td><td class='muted'>—</td><td><span class='new'>NEW</span></td></tr></table></section>
 <section><h2>Alert policy</h2>
-<div class="tier"><span class="dot g"></span><b>Discovery</b>&nbsp;— new product &gt;1M views → log + daily digest</div>
-<div class="tier"><span class="dot y"></span><b>Momentum</b>&nbsp;— trend jumps &gt;20% in 24h → Telegram #trending</div>
-<div class="tier"><span class="dot r"></span><b>Gap</b>&nbsp;— trend &gt;70 &amp; Pickle supply = 0 → Telegram + email + campaign draft</div></section>
+<div class="tier"><span class="dot g"></span><b>Discovery</b>&nbsp;— new product &gt;1M raw views → log + daily digest</div>
+<div class="tier"><span class="dot y"></span><b>Momentum</b>&nbsp;— raw views/saves &gt;30% day-over-day → Telegram #trending</div>
+<div class="tier"><span class="dot r"></span><b>Gap</b>&nbsp;— &gt;2M raw views &amp; Pickle supply = 0 → Telegram + email + campaign draft</div>
+<div class="tier muted" style="font-size:11px">Alerts key off <b>raw</b> signals (views/saves/listings), not the normalized score — which only ranks within a run.</div></section>
 <footer>Lightweight PoC · signals are directional — see the README for what's reliable vs. not.<br>Trend = 0.5·views + 0.3·saves + 0.2·freshness, <b>min-max normalized across these 3 dresses</b> — so 100 is the highest in <i>this set</i>, not an absolute scale (production would use percentile ranks vs. a rolling 30-day baseline). Opportunity = Trend × supply-gap (higher when the trending style has little/no rental supply).</footer>
 </body></html>

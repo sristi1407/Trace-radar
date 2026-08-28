@@ -1,0 +1,47 @@
+name: Daily radar refresh
+
+# Runs the whole pipeline every morning, commits the dated snapshots (this is how the
+# rolling 30-day baseline for percentile scoring accumulates), and regenerates
+# dashboard.html in CI — so the README/scorecard/dashboard can never drift apart again.
+on:
+  schedule:
+    - cron: "0 13 * * *"   # 13:00 UTC ≈ 09:00 ET, daily
+  workflow_dispatch: {}      # allow manual runs from the Actions tab
+
+permissions:
+  contents: write            # to commit refreshed data + dashboard
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Run the pipeline
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}   # add this in repo Settings → Secrets
+        run: |
+          python -m radar.discover        || true   # continue past a single failed stage
+          python -m radar.pickle_scraper house-of-cb/dresses realisation-par/dresses nadine-merabi/dresses || true
+          python -m radar.tiktok_signals  || true
+          python -m radar.shopmy_signals  || true
+          python -m radar.score
+          python -m radar.diff            || true
+          python -m radar.dashboard
+
+      - name: Commit refreshed data + dashboard
+        run: |
+          git config user.name  "sristi1407"
+          git config user.email "66542493+sristi1407@users.noreply.github.com"
+          git add data/ dashboard.html
+          git commit -m "Daily radar refresh ($(date -u +%Y-%m-%d))" || echo "nothing to commit"
+          git push

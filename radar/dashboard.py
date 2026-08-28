@@ -195,9 +195,10 @@ def main():
 <section><h2>🔎 Discovery feed <span class="muted">— inverse search: dresses the radar found on its own</span></h2>
 <table class="feed"><tr><th>Brand</th><th>Views</th><th>Posts</th><th>Top product</th><th></th></tr>{feed}</table></section>
 <section><h2>Alert policy</h2>
-<div class="tier"><span class="dot g"></span><b>Discovery</b>&nbsp;— new product &gt;1M views → log + daily digest</div>
-<div class="tier"><span class="dot y"></span><b>Momentum</b>&nbsp;— trend jumps &gt;20% in 24h → Telegram #trending</div>
-<div class="tier"><span class="dot r"></span><b>Gap</b>&nbsp;— trend &gt;70 &amp; Pickle supply = 0 → Telegram + email + campaign draft</div></section>
+<div class="tier"><span class="dot g"></span><b>Discovery</b>&nbsp;— new product &gt;1M raw views → log + daily digest</div>
+<div class="tier"><span class="dot y"></span><b>Momentum</b>&nbsp;— raw views/saves &gt;30% day-over-day → Telegram #trending</div>
+<div class="tier"><span class="dot r"></span><b>Gap</b>&nbsp;— &gt;2M raw views &amp; Pickle supply = 0 → Telegram + email + campaign draft</div>
+<div class="tier muted" style="font-size:11px">Alerts key off <b>raw</b> signals (views/saves/listings), not the normalized score — which only ranks within a run.</div></section>
 <footer>Lightweight PoC · signals are directional — see the README for what's reliable vs. not.<br>Trend = 0.5·views + 0.3·saves + 0.2·freshness, <b>min-max normalized across these 3 dresses</b> — so 100 is the highest in <i>this set</i>, not an absolute scale (production would use percentile ranks vs. a rolling 30-day baseline). Opportunity = Trend × supply-gap (higher when the trending style has little/no rental supply).</footer>
 </body></html>"""
     with open(OUT, "w") as f:
